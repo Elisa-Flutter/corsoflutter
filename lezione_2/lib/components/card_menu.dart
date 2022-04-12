@@ -39,22 +39,16 @@ class _CardMenuState extends State<CardMenu> {
             });
           },
           child: Card(
-
-            /*
-              _attiva ? Colors.black12 : Colors.yellow
-            * if(_attiva){
-                    Colors.black12;
-               } else {
-               Colors.yellow
-               }
-            * */
-            color: _attiva ? Colors.yellow : Colors.black12,
+            color: Colors.black12,
             child: AspectRatio(
               aspectRatio: 1,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset('pizza.png'),
+                  Icon(widget.icona,
+                    size: 80,
+                    color: Colors.deepPurple,
+                  ),
                   const SizedBox(height: 16),
                   Text(widget.titolo,
                     style: const TextStyle(
