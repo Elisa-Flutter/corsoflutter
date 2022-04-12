@@ -45,10 +45,7 @@ class _CardMenuState extends State<CardMenu> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(widget.icona,
-                    size: 80,
-                    color: Colors.deepPurple,
-                  ),
+                  Image.asset('assets/pizza.png', width: 50, height: 50),
                   const SizedBox(height: 16),
                   Text(widget.titolo,
                     style: const TextStyle(
