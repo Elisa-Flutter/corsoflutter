@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lezione_2/components/card_menu.dart';
+import 'package:lezione_2/profilo.dart';
 
 void main() {
   runApp(const Mockup());
@@ -43,10 +44,17 @@ class _MyHomePageState extends State<MyHomePage> {
          ),
          child: Row(
            mainAxisAlignment: MainAxisAlignment.spaceAround,
-           children: const [
-             Icon(Icons.home, size: 45),
-             Icon(Icons.pin_drop, size: 45),
-             Icon(Icons.person, size: 45)
+           children: [
+             const Icon(Icons.home, size: 45),
+             const Icon(Icons.pin_drop, size: 45),
+             IconButton(
+               padding: EdgeInsets.zero,
+                 onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const Profilo()
+                    )
+                 ),
+                 icon: const Icon(Icons.person, size: 45,)
+             )
            ],
          ),
        )
