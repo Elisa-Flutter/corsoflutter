@@ -9,38 +9,42 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  bool gridViewOn = true;
-  final SliverGridDelegate _sliverGridDelegate = const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2);
+  bool _gridViewOn = true;
+  final _gridDelegate = const SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 2
+  );
 
-  void changeGridView() {
+  void toggleGridView() {
     setState(() {
-      gridViewOn = !gridViewOn;
+      _gridViewOn = !_gridViewOn;
     });
   }
-  final listCartelle = const [
+
+  final _listaCartelle = const [
     Cartella(
-      title: 'Permanent tasks',
       iconData: Icons.folder,
-      numTasks: 10
+      titolo: 'Permanent Tasks',
+      numTask: 10,
     ),
     Cartella(
-      title: 'Current tasks',
-      iconData: Icons.file_download_outlined,
-      numTasks: 14
+      iconData: Icons.system_update_alt_outlined,
+      titolo: 'Current Tasks',
+      numTask: 14,
     ),
     Cartella(
-      title: 'Next tasks',
       iconData: Icons.watch_later_outlined,
-      numTasks: 2
+      titolo: 'Next Tasks',
+      numTask: 2,
     ),
     Cartella(
-      title: 'Future tasks',
       iconData: Icons.calendar_today_rounded,
-      numTasks: 14
+      titolo: 'Permanent Tasks',
+      numTask: 6,
     ),
     Cartella(
-      title: 'Completed tasks',
       iconData: Icons.file_download_done_outlined,
+      titolo: 'Completed Tasks',
+      numTask: 0,
     ),
   ];
 
@@ -48,74 +52,78 @@ class _HomepageState extends State<Homepage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
         centerTitle: true,
+        elevation: 0,
         leading: IconButton(
-          icon: Icon(gridViewOn ? Icons.list : Icons.grid_view_outlined),
-          onPressed: changeGridView,
+          onPressed: toggleGridView,
+          icon: Icon(_gridViewOn ? Icons.list : Icons.grid_view),
         ),
-        title: const Text('Folders & Projects'),
+        title: const Text('Folders & Project'),
         actions: const [
-           Padding(
-             padding: EdgeInsets.only(right: 16.0),
-             child: Icon(Icons.close),
-           )
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Icon(Icons.close),
+          ),
         ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text('Folders',
-              style: TextStyle(
-                color: Colors.blueGrey.shade400,
-                fontSize: 30,
-              ),
-            ),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Text('Folders', style: TextStyle(fontSize: 20, color: Colors.black54),),
           ),
-          Expanded(
-            child:
-            gridViewOn
-             ? GridView.builder(
-                itemCount: listCartelle.length,
-                gridDelegate: _sliverGridDelegate,
-                itemBuilder: (context, index){
-                  return Card(
+          _gridViewOn
+           ? Expanded(
+              child: GridView.builder(
+                  gridDelegate: _gridDelegate,
+                  itemCount: _listaCartelle.length,
+                  itemBuilder: (context, index) => Card(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                      Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: Colors.blueGrey.withOpacity(0.3),
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Container(
+                              height: 60,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.blueGrey.withOpacity(.1)
+                              ),
                             ),
-                            height: 40,
+                            Icon(
+                                _listaCartelle[index].iconData,
+                                color: Colors.blue,
+                            )
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: Text(_listaCartelle[index].titolo,
+                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                           ),
-                          Icon(listCartelle[index].iconData)
-                        ],
-                      ),
-                      Text(listCartelle[index].title),
-                      Text('${listCartelle[index].numTasks} Tasks')
-                    ],
-                    ),
-                  );
-                }
-            )
-
-            : ListView.builder(
-                itemCount: listCartelle.length,
-                itemBuilder: (context, index){
-                  return ListTile(
-                    title: Text(listCartelle[index].title),
-                    leading: Icon(listCartelle[index].iconData),
-                  );
-                }
-            ),
-          ),
+                        ),
+                        Text('${_listaCartelle[index].numTask} Tasks',
+                          style: const TextStyle(
+                             color: Colors.black54
+                            ),
+                        ),
+                      ],
+                    )
+                  )
+              )
+          )
+              : Expanded(
+              child: ListView.builder(
+                  itemCount: _listaCartelle.length,
+                  itemBuilder: (context, index) =>
+                      ListTile(
+                        leading: Icon(_listaCartelle[index].iconData),
+                        title: Text(_listaCartelle[index].titolo),
+                      )
+              )
+          )
         ],
       ),
     );

@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 
 class Cartella{
   final IconData iconData;
-  final String title;
-  final int numTasks;
+  final String titolo;
+  final int numTask;
 
   const Cartella({
     required this.iconData,
-    required this.title,
-    this.numTasks = 0});
+    required this.titolo,
+    required this.numTask
+  });
 }
