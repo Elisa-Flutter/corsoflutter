@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:folder_project/components/cartelle_in_griglia.dart';
+import 'package:folder_project/components/cartelle_in_lista.dart';
+import 'package:folder_project/components/custom_app_bar.dart';
+import 'package:folder_project/components/titolo.dart';
 import 'package:folder_project/models/cartella.dart';
 
 class Homepage extends StatefulWidget {
@@ -9,10 +13,7 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  bool _gridViewOn = true;
-  final _gridDelegate = const SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisCount: 2
-  );
+  bool _gridViewOn = false;
 
   void toggleGridView() {
     setState(() {
@@ -51,79 +52,18 @@ class _HomepageState extends State<Homepage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        elevation: 0,
-        leading: IconButton(
-          onPressed: toggleGridView,
-          icon: Icon(_gridViewOn ? Icons.list : Icons.grid_view),
-        ),
-        title: const Text('Folders & Project'),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Icon(Icons.close),
-          ),
-        ],
-      ),
+      appBar: CustomAppBar(callback: toggleGridView, gridViewOn: _gridViewOn,),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: Text('Folders', style: TextStyle(fontSize: 20, color: Colors.black54),),
-          ),
+           const Titolo(title: 'Folders'),
           _gridViewOn
            ? Expanded(
-              child: GridView.builder(
-                  gridDelegate: _gridDelegate,
-                  itemCount: _listaCartelle.length,
-                  itemBuilder: (context, index) => Card(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Container(
-                              height: 60,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.blueGrey.withOpacity(.1)
-                              ),
-                            ),
-                            Icon(
-                                _listaCartelle[index].iconData,
-                                color: Colors.blue,
-                            )
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: Text(_listaCartelle[index].titolo,
-                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                          ),
-                        ),
-                        Text('${_listaCartelle[index].numTask} Tasks',
-                          style: const TextStyle(
-                             color: Colors.black54
-                            ),
-                        ),
-                      ],
-                    )
-                  )
-              )
-          )
+              child: CartelleInGriglia(_listaCartelle)
+            )
               : Expanded(
-              child: ListView.builder(
-                  itemCount: _listaCartelle.length,
-                  itemBuilder: (context, index) =>
-                      ListTile(
-                        leading: Icon(_listaCartelle[index].iconData),
-                        title: Text(_listaCartelle[index].titolo),
-                      )
-              )
-          )
+                  child: CartelleInLista(_listaCartelle)
+                )
         ],
       ),
     );
