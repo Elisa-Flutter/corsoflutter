@@ -46,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
            mainAxisAlignment: MainAxisAlignment.spaceAround,
            children: [
              const Icon(Icons.home, size: 45),
-             const Icon(Icons.pin_drop, size: 45),
+             const Icon(Icons.pin_drop, color: Color(0xFFAAAAA),size: 45),
              IconButton(
                padding: EdgeInsets.zero,
                  onPressed: () => Navigator.of(context).push(
