@@ -36,7 +36,16 @@ class MyApp extends StatelessWidget {
                       children: const [
                         Cover(),
                         Cover(),
-                        Cover()
+                        Cover(),
+                        Cover(),
+                        Cover(),
+                        Cover(),
+                        Cover(),
+                        Cover(),
+                        Cover(),
+                        Cover(),
+                        Cover(),
+                        Cover(),
                       ],
                   ),
                 )
