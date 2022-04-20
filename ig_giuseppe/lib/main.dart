@@ -3,6 +3,7 @@ import 'package:ig_giuseppe/components/bio.dart';
 import 'package:ig_giuseppe/components/profile_button.dart';
 import 'package:ig_giuseppe/components/propic.dart';
 import 'package:ig_giuseppe/components/stories_list.dart';
+import 'package:ig_giuseppe/components/tab_bar_view.dart';
 import 'package:ig_giuseppe/components/user_data.dart';
 
 
@@ -170,84 +171,8 @@ class MyHomePage extends StatelessWidget {
             ]),
 
             //TAB
-            DefaultTabController(
-              length: 3,
-              child: ListView(
-                physics: const ClampingScrollPhysics(),
-                shrinkWrap: true,
-                children: [
-                  const TabBar(
-                    tabs: [
-                      Tab(
-                        icon: Icon(Icons.home, color: Colors.black),
-                      ),
-                      Tab(
-                        icon: Icon(Icons.person, color: Colors.black),
-                      ),
-                      Tab(
-                        icon: Icon(Icons.star, color: Colors.black),
-                      )
-                    ],
-                  ),
-                  TabBarView(
-                    physics: const ClampingScrollPhysics(),
-                    children: [
-                      GridView.count(
-                        shrinkWrap: true,
-                        physics: ClampingScrollPhysics(),
-                          //TAB 1
-                          crossAxisCount: 3,
-                          children: List.generate( 7, (index) =>
-                              Container(
-                                width: MediaQuery.of(context).size.width/3,
-                                height: MediaQuery.of(context).size.width/3,
-                                decoration: BoxDecoration(border: Border.all(color: Colors.black), color: Colors.red),
-                                  ),
-                          ),
-                      ),
-                      GridView.count(
-                        shrinkWrap: true,
-                        physics: ClampingScrollPhysics(),
-                        //TAB 1
-                        crossAxisCount: 3,
-                        //TAB 2
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width / 3,
-                            height: MediaQuery.of(context).size.width / 3,
-                            color: Colors.green,
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width / 3,
-                            height: MediaQuery.of(context).size.width / 3,
-                            color: Colors.purple,
-                          )
-                        ],
-                      ),
-                      GridView.count(
-                        shrinkWrap: true,
-                        physics: ClampingScrollPhysics(),
-                        //TAB 1
-                        crossAxisCount: 3,
-                        //TAB 3
-                        children: [
-                          Container(
-                            width: MediaQuery.of(context).size.width / 3,
-                            height: MediaQuery.of(context).size.width / 3,
-                            color: Colors.amber,
-                          ),
-                          Container(
-                            width: MediaQuery.of(context).size.width / 3,
-                            height: MediaQuery.of(context).size.width / 3,
-                            color: Colors.orange,
-                          )
-                        ],
-                      )
-                    ],
-                  )
-                ],
-              ),
-            )
+            const TabBarViewCustom()
+
           ],
         ),
       ),
