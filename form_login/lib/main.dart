@@ -207,6 +207,32 @@ class _MyHomePageState extends State<MyHomePage> {
                         autocorrect: false,
                       ),
                       const SizedBox(height: 20),
+                      Align(
+                        child: ElevatedButton(
+                          onPressed: () => print('ciao'),
+                          child: const Text('Sono un testo'),
+                          style: ButtonStyle(
+                              backgroundColor:
+                              MaterialStateProperty.resolveWith(
+                                      (states) {
+                                    if(states.contains(MaterialState.pressed)){
+                                      return Colors.yellow.shade700;
+                                    }
+                                    return Colors.yellow;
+                                  }
+                              )
+                          ),
+                        ),
+                      ),Align(
+                        child: ElevatedButton(
+                          onPressed: () => print('ciao'),
+                          child: const Text('Sono un altro testo'),
+                          style: ButtonStyle(
+                              backgroundColor:
+                              MaterialStateProperty.all(Colors.red)
+                          ),
+                        ),
+                      ),
                       ElevatedButton(
                           onPressed: (){
                             //?? restituisce il valore di destra nel caso in cui il valore alla sua sinistra sia null
