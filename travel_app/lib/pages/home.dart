@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:travel_app/models/interessi.dart';
 
@@ -12,6 +11,9 @@ class Home extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
+        iconTheme: const IconThemeData(
+          color: Colors.black87
+        ),
         title: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -38,8 +40,8 @@ class Home extends StatelessWidget {
                 Row(
                   children: <Widget>[Text('All ')] +
                       Interessi.values.map(
-                          (interesse) => Text(interesse.name)
-                  ).toList(),
+                          (interesse) => Icon(interesse.icon)
+                  ).toList(), //List<Icon>[Icon(Icons.android), Icon(Icons.tent)...]
                 )
               ],
             )

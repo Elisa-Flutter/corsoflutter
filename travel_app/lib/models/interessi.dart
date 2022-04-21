@@ -9,14 +9,7 @@ enum Interessi{
   spa
 }
 
-extension StringaExtension on String{
-  String get prova{
-    return "prova";
-  }
-}
-
 extension InteressiExtension on Interessi{
-
   IconData get icon {
     switch(this){
       case Interessi.mare:
