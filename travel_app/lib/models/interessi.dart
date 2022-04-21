@@ -26,4 +26,21 @@ extension InteressiExtension on Interessi{
         return Icons.person;
     }
   }
+
+  Color get color {
+    switch(this){
+      case Interessi.mare:
+        return Colors.blue;
+      case Interessi.montagna:
+        return Colors.green;
+      case Interessi.lago:
+        return Colors.teal;
+      case Interessi.piscina:
+        return Colors.yellow;
+      case Interessi.bosco:
+        return Colors.brown;
+      case Interessi.spa:
+        return Colors.deepPurple;
+    }
+  }
 }
