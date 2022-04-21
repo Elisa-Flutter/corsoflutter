@@ -42,6 +42,7 @@ class MyHomePage extends StatefulWidget {
 
   final String title;
 
+
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
@@ -51,6 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final _controllerUsername = TextEditingController(text: 'Ciao');
   final _controllerPassword = TextEditingController();
+  bool passwordVisibile = false;
 
   @override
   Widget build(BuildContext context) {
@@ -140,6 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           labelText: 'Username',
                           hintText: 'nome@example.it',
 
+
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(
                               color: Colors.white,
@@ -166,7 +169,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         //autofocus: true,
                         //readOnly: true,
                         //obscuringCharacter: '*',
-                        //obscureText: true,
+                        //obscureText: passwordVisibile,
                        // autocorrect: true,
                         validator: (value){
                           //valida se:
@@ -208,14 +211,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       const SizedBox(height: 20),
                       Align(
+                        alignment: Alignment.centerLeft,
                         child: ElevatedButton(
                           onPressed: () => print('ciao'),
                           child: const Text('Sono un testo'),
                           style: ButtonStyle(
                               backgroundColor:
-                              MaterialStateProperty.resolveWith(
-                                      (states) {
-                                    if(states.contains(MaterialState.pressed)){
+                              MaterialStateProperty.resolveWith((states)
+                              { if(states.contains(MaterialState.pressed)){
                                       return Colors.yellow.shade700;
                                     }
                                     return Colors.yellow;
