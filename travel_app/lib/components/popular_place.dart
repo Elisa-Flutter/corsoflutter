@@ -21,9 +21,7 @@ class PopularPlace extends StatelessWidget {
               itemBuilder: (context, index) {
                 if(MetaTuristica.listaMete[index].rating >= 5){
                   return CardPlace(
-                      imageUrl: MetaTuristica.listaMete[index].imageUrl,
-                      city: MetaTuristica.listaMete[index].city,
-                      country: MetaTuristica.listaMete[index].country
+                      MetaTuristica.listaMete[index]
                   );
                 }
                 return const SizedBox(width: 0);

@@ -20,10 +20,7 @@ class Recommended extends StatelessWidget {
             children:
             MetaTuristica.listaMete.where((meta) => meta.raccomanded /*== true*/)
                 .map((metaRaccomanta) =>
-                CardPlace(
-                    imageUrl: metaRaccomanta.imageUrl,
-                    city: metaRaccomanta.city,
-                    country: metaRaccomanta.country)
+                CardPlace(metaRaccomanta)
             ).toList(),
           ),
         )

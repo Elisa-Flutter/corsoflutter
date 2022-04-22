@@ -24,7 +24,10 @@ class Home extends StatelessWidget {
             ),
             Text(
               'Italia',
-              style: TextStyle(color: Colors.blue),
+              style: TextStyle(
+                  color: Colors.blue,
+
+              ),
             )
           ],
         ),
@@ -45,7 +48,7 @@ class Home extends StatelessWidget {
           children: const [
             Categorie(),
             SizedBox(height: 24),
-            Ricerca(),
+            Ricerca(shouldGoToSearchPage: true,),
             PopularPlace(height: 170),
             Recommended(height: 170)
           ],

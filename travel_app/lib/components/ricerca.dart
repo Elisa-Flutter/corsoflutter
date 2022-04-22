@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 
 class Ricerca extends StatelessWidget {
-  const Ricerca({Key? key}) : super(key: key);
+  final bool shouldGoToSearchPage;
+  const Ricerca({this.shouldGoToSearchPage = false, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        const Expanded(
+        Expanded(
             child: TextField(
-              decoration: InputDecoration(
+              onTap: shouldGoToSearchPage ? () {
+                FocusScope.of(context).unfocus();
+                Navigator.of(context).pushNamed('/search');
+              } : null,
+              readOnly: true,
+              decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   suffixIcon: Icon(Icons.search),
                   hintText: 'Search'),
