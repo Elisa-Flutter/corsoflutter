@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class Ricerca extends StatelessWidget {
-  final bool shouldGoToSearchPage;
+  final bool amIOnHomepage;
   final Function(String)? callback;
-  const Ricerca({this.shouldGoToSearchPage = false, this.callback, Key? key}) : super(key: key);
+  const Ricerca({this.amIOnHomepage = false, this.callback, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,13 +11,15 @@ class Ricerca extends StatelessWidget {
       children: [
         Expanded(
             child: TextField(
-              onTap: shouldGoToSearchPage ? () {
-                FocusScope.of(context).unfocus();
-                Navigator.of(context).pushNamed('/search');
-              } : null,
+              onTap: amIOnHomepage
+                  ?  () {
+                        FocusScope.of(context).unfocus();
+                        Navigator.of(context).pushNamed('/search');
+                      }
+                  : null,
               onChanged: callback,
-              readOnly: shouldGoToSearchPage,
-              autofocus: !shouldGoToSearchPage,
+              readOnly: amIOnHomepage,
+              autofocus: !amIOnHomepage,
               decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   suffixIcon: Icon(Icons.search),
