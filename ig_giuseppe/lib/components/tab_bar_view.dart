@@ -121,7 +121,6 @@ class _TabBarViewCustomState extends State<TabBarViewCustom> with SingleTickerPr
                setState(() {
                   selectedIndex = index;
                   tabController.animateTo(index);
-                  print(selectedIndex);
                });
             },
             controller: tabController,
