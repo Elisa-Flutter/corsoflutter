@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class Ricerca extends StatelessWidget {
   final bool shouldGoToSearchPage;
-  const Ricerca({this.shouldGoToSearchPage = false, Key? key}) : super(key: key);
+  final Function(String)? callback;
+  const Ricerca({this.shouldGoToSearchPage = false, this.callback, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,9 @@ class Ricerca extends StatelessWidget {
                 FocusScope.of(context).unfocus();
                 Navigator.of(context).pushNamed('/search');
               } : null,
-              readOnly: true,
+              onChanged: callback,
+              readOnly: shouldGoToSearchPage,
+              autofocus: !shouldGoToSearchPage,
               decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   suffixIcon: Icon(Icons.search),
