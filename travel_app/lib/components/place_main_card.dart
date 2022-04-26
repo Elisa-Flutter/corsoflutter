@@ -16,6 +16,7 @@ class PlaceMainCard extends StatelessWidget {
         padding:
         const EdgeInsets.symmetric(horizontal: 8.0, vertical: 24),
         child: Column(
+         mainAxisSize: MainAxisSize.min,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,

@@ -26,7 +26,19 @@ class Ricerca extends StatelessWidget {
                   hintText: 'Search'),
             )),
         IconButton(
-            onPressed: () => print('filtra'),
+            onPressed: () {
+              if(Scaffold.of(context).hasEndDrawer){
+                Scaffold.of(context).openEndDrawer();
+              }
+              /*if(amIOnHomepage){
+                Navigator.of(context).pushNamed('/search', arguments: [{'filterOpen': true}]);
+              } else{
+                if(Scaffold.of(context).hasEndDrawer){
+                  Scaffold.of(context).openEndDrawer();
+                }
+              }*/
+
+            },
             icon: const Icon(Icons.filter_list))
       ],
     );

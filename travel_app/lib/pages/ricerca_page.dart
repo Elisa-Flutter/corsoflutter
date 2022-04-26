@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:travel_app/components/card_place.dart';
+import 'package:travel_app/components/filter_drawer.dart';
 import 'package:travel_app/components/ricerca.dart';
 import 'package:travel_app/models/meta_turistica.dart';
 
@@ -12,14 +14,72 @@ class RicercaPage extends StatefulWidget {
 
 class _RicercaPageState extends State<RicercaPage> {
   late List<MetaTuristica> _risultatiRicerca;
+  late bool endDrawerOpen;
+  late final GlobalKey<ScaffoldState> _scaffold;
+  String? _parolaDiRicerca;
+
+  late int _minRating;
+  late int _maxRating;
+
+  String? _country;
+  bool? _available;
 
   @override
   void initState() {
     super.initState();
+
+    _minRating = 1;
+    _maxRating = 5;
+
     _risultatiRicerca = MetaTuristica.listaMete;
+    _scaffold = GlobalKey();
+
+    SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
+      final modalArgs = ModalRoute.of(context)?.settings.arguments ?? [];
+      if(modalArgs is List
+          && modalArgs.isNotEmpty
+          && modalArgs[0] is Map<String, dynamic>
+          && modalArgs[0]['filterOpen'] == true){
+        _scaffold.currentState?.openEndDrawer();
+      }
+    });
   }
 
-  _filtraMete(String parolaDiRicerca){
+
+  void _additionalFilters({int minRating = 1, int maxRating = 5}){
+    setState(() {
+      _minRating = minRating;
+      _maxRating = maxRating;
+
+
+      _risultatiRicerca = _risultatiRicerca.where((risultato){
+        return risultato.rating >= minRating && risultato.rating <= maxRating;
+      }).toList();
+    });
+  }
+
+  /*_additionalFilters(
+      {int minRating = 1, int maxRating = 5, String? country, bool? available}){
+    setState(() {
+      _minRating = minRating;
+      _maxRating = maxRating;
+      _country = country;
+      _available = available;
+
+      print('minRating = $minRating, maxRating = $maxRating, country = $country, available = $available');
+      _filtraMete(_parolaDiRicerca?? '');
+      _risultatiRicerca = _risultatiRicerca.where((meta) {
+        return meta.rating >= minRating
+            && meta.rating <= maxRating
+            && (country == null || country.isEmpty || meta.country == country)
+            && (available == null || meta.available == available);
+        }
+        ).toList();
+      });}
+*/
+
+  void _filtraMete(String parolaDiRicerca){
+    _parolaDiRicerca = parolaDiRicerca;
     if(parolaDiRicerca.isEmpty){
       setState(() {
         _risultatiRicerca = MetaTuristica.listaMete;
@@ -40,16 +100,31 @@ class _RicercaPageState extends State<RicercaPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffold,
       appBar: AppBar(
-        title: Text('Ricerca'),
+        title: const Text('Ricerca'),
+        actions: const [
+          SizedBox(width: 0)
+        ],
+      ),
+      endDrawerEnableOpenDragGesture: false,
+      endDrawer: FilterDrawer(
+        selectedRating: RangeValues(_minRating.toDouble(), _maxRating.toDouble()),
+        setFilters: _additionalFilters,
+       /* available: _available ?? false,
+        selectedCountry: _country,
+        selectedRating: RangeValues(_minRating.toDouble(), _maxRating.toDouble()),
+      */
+
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
             Ricerca(amIOnHomepage: false, callback: _filtraMete),
-            _risultatiRicerca.length == 0
-            ? Text('Nessun risultato per la ricerca')
+            if(_risultatiRicerca.isNotEmpty) Text('Risultati trovati: ${_risultatiRicerca.length}'),
+            _risultatiRicerca.isEmpty
+            ? const Text('Nessun risultato per la ricerca')
             : Expanded(
                 child: ListView.builder(
                     itemCount: _risultatiRicerca.length,

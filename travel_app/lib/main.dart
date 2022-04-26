@@ -14,6 +14,11 @@ class MyApp extends StatelessWidget {
       title: 'Travel App',
       initialRoute: '/',
       routes: generateRoutes(),
+      theme: ThemeData(
+        sliderTheme: SliderThemeData(
+
+        )
+      ),
     );
   }
 }

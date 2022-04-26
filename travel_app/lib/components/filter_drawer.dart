@@ -1,0 +1,207 @@
+import 'package:flutter/material.dart';
+import 'package:travel_app/components/titolo.dart';
+import 'package:travel_app/models/meta_turistica.dart';
+
+class FilterDrawer extends StatefulWidget {
+  final RangeValues selectedRating;
+  final Function({int minRating, int maxRating}) setFilters;
+
+ /* final bool available;
+  final String? selectedCountry;
+  final Function({int minRating, int maxRating, String? country, bool? available}) setFilters;*/
+  const FilterDrawer({required this.selectedRating, required this.setFilters, /*this.selectedCountry, this.available = false, this.selectedRating = const RangeValues(1, 5),*/ Key? key}) : super(key: key);
+
+  @override
+  State<FilterDrawer> createState() => _FilterDrawerState();
+}
+
+class _FilterDrawerState extends State<FilterDrawer> {
+  late RangeValues _selectedRating;
+
+  @override
+  void initState(){
+    super.initState();
+    _selectedRating = widget.selectedRating;
+  }
+
+
+/*  final _formKey = GlobalKey<FormState>();
+  late RangeValues _selectedRating;
+  late bool _available;
+  late List<String> _countryList;
+  String? _selectedCountry;
+
+  @override
+  void initState() {
+    super.initState();
+    _countryList =
+        MetaTuristica.listaMete.map((meta) => meta.country).toSet().toList();
+    _countryList.sort();
+
+    //initializers
+    _selectedRating = widget.selectedRating;
+    _available = widget.available;
+    _selectedCountry = widget.selectedCountry;
+  }*/
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: SafeArea(
+        child: Column(
+          children: [
+            const Text('Filtri'),
+            Expanded(
+              child: Form(
+                child: ListView(
+                  children: [
+                    Text('Rating (attualmente selezionato da ${_selectedRating.start.toString().substring(0, 1)} a ${_selectedRating.end.toString().substring(0, 1)})'),
+                    Row(
+                      children: [
+                        const Text('1'),
+                        Expanded(
+                          child: RangeSlider(
+                          min: 1,
+                          max: 5,
+                          values: _selectedRating,
+                          divisions: 4,
+                          onChanged: (RangeValues value) {
+                            setState(() {
+                              _selectedRating = value;
+                              widget.setFilters(minRating: value.start.toInt(), maxRating: value.end.toInt());
+                            });
+                          },
+                            labels: RangeLabels(
+                              _selectedRating.start.toString().substring(0, 1),
+                              _selectedRating.end.toString().substring(0, 1)
+                            ),
+
+                          ),
+                        ),
+                        const Text('5'),
+                      ],
+                    ),
+                  ]
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+
+
+
+  }
+   /* return Drawer(
+      child: SafeArea(
+        minimum: const EdgeInsets.symmetric(horizontal: 16),
+        child: Column(
+          children: [
+            const Titolo('Filtri'),
+            Expanded(
+              child: Form(
+                key: _formKey,
+                child: ListView(
+                  children: [
+                    Text(
+                        "Rating (selezionato ${_selectedRating.start.toString().substring(0, 1)}, ${_selectedRating.end.toString().substring(0, 1)}):"),
+                    Row(
+                      children: [
+                        const Text('1'),
+                        Expanded(
+                          child: RangeSlider(
+                            min: 1,
+                            max: 5,
+                            onChanged: (RangeValues value) {
+                              setState(() {
+                                _selectedRating = value;
+                              });
+                            },
+                            divisions: 4,
+                            values: _selectedRating,
+                            labels: RangeLabels(
+                                _selectedRating.start
+                                    .toString()
+                                    .substring(0, 1),
+                                _selectedRating.end.toString().substring(0, 1)),
+                          ),
+                        ),
+                        const Text('5'),
+                      ],
+                    ),
+                    FormField(
+                      builder: (context) => InputDecorator(
+                        decoration: const InputDecoration(
+                          labelText: 'Stato',
+                          border: OutlineInputBorder(),
+                          isDense: true
+                        ),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String?>(
+                              isDense: true,
+                              value: _selectedCountry,
+                              items: <DropdownMenuItem<String?>>[
+                                   const DropdownMenuItem(
+                                        value: null,
+                                        child: Text('Nessuno selezionato'))
+                                  ] +
+                                  _countryList
+                                      .map((country) => DropdownMenuItem(
+                                          value: country, child: Text(country)))
+                                      .toList(),
+                              onChanged: (countrySelected) {
+                                setState(() {
+                                  _selectedCountry = countrySelected;
+                                });
+                              }),
+                        ),
+                      ),
+                    ),
+                    SwitchListTile(
+                        contentPadding: EdgeInsets.zero,
+                        title: const Text('Solo available'),
+                        value: _available,
+                        onChanged: (value){
+                          setState(() {
+                            _available = value;
+                          });
+                        }
+                    )
+                  ],
+                ),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+              ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      _available = false;
+                      _selectedCountry = null;
+                      _selectedRating = const RangeValues(1, 5);
+                      _formKey.currentState?.reset();
+                    });
+
+                  },
+                  child: const Text('Reset')
+              ),
+              ElevatedButton(
+                  onPressed: (){
+                    widget.setFilters(
+                      minRating: _selectedRating.start.toInt(),
+                      maxRating: _selectedRating.end.toInt(),
+                      country: _selectedCountry,
+                      available: _available == true ? true : null
+                    );
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Conferma')
+              ),
+            ],)
+          ],
+        ),
+      ),
+    );*/
+}
