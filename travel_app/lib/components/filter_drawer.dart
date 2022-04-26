@@ -5,12 +5,12 @@ import 'package:travel_app/models/meta_turistica.dart';
 class FilterDrawer extends StatefulWidget {
   final RangeValues selectedRating;
   final String? selectedCountry;
-  final Function({int minRating, int maxRating, String? country}) setFilters;
+  final bool? available;
+  final Function({int minRating, int maxRating, String? country, bool? available}) setFilters;
 
- /* final bool available;
-  final String? selectedCountry;
-  final Function({int minRating, int maxRating, String? country, bool? available}) setFilters;*/
-  const FilterDrawer({required this.selectedRating, required this.setFilters, this.selectedCountry, /*this.available = false, this.selectedRating = const RangeValues(1, 5),*/ Key? key}) : super(key: key);
+
+  const FilterDrawer({required this.selectedRating, required this.setFilters, this.selectedCountry,
+    this.available = false, Key? key}) : super(key: key);
 
   @override
   State<FilterDrawer> createState() => _FilterDrawerState();
@@ -20,12 +20,14 @@ class _FilterDrawerState extends State<FilterDrawer> {
   late RangeValues _selectedRating;
   late List<String> _countryList;
   String? _selectedCountry;
+  late bool? _available;
 
   @override
   void initState(){
     super.initState();
     _selectedRating = widget.selectedRating;
     _selectedCountry = widget.selectedCountry;
+    _available = widget.available;
 
     _countryList =
         MetaTuristica.listaMete.map((meta) => meta.country)
@@ -36,24 +38,7 @@ class _FilterDrawerState extends State<FilterDrawer> {
   }
 
 
-/*  final _formKey = GlobalKey<FormState>();
-  late RangeValues _selectedRating;
-  late bool _available;
-
-  String? _selectedCountry;
-
-  @override
-  void initState() {
-    super.initState();
-    _countryList =
-        MetaTuristica.listaMete.map((meta) => meta.country).toSet().toList();
-    _countryList.sort();
-
-    //initializers
-    _selectedRating = widget.selectedRating;
-    _available = widget.available;
-    _selectedCountry = widget.selectedCountry;
-  }*/
+/*  final _formKey = GlobalKey<FormState>();*/
 
   @override
   Widget build(BuildContext context) {
@@ -124,6 +109,18 @@ class _FilterDrawerState extends State<FilterDrawer> {
                         );
                       },
                     ),
+
+                    SwitchListTile(
+                        contentPadding: EdgeInsets.zero,
+                        title: const Text('Only available'),
+                        value: _available ?? false,
+                        onChanged: (toggle){
+                          setState(() {
+                            _available = toggle;
+                          });
+                        }
+                    )
+
                   ]
                 ),
               ),
@@ -131,20 +128,26 @@ class _FilterDrawerState extends State<FilterDrawer> {
             Row(
               children: [
                 TextButton(
-                    onPressed: () => print('_reset'),
-                    child: Text('Reset')
+                    onPressed: () {
+                      setState(() {
+                        _available = null;
+                        _selectedCountry = null;
+                        _selectedRating = const RangeValues(1, 5);
+                      });
+                    },
+                    child: const Text('Reset')
                 ),
                 TextButton(
                     onPressed: () {
                       widget.setFilters(
                        minRating: _selectedRating.start.toInt(),
                        maxRating: _selectedRating.end.toInt(),
-                       country: _selectedCountry
+                       country: _selectedCountry,
+                       available: _available == false ? null : _available
                       );
                       Navigator.of(context).pop();
                     },
                     child: Text('Applica'))
-
               ],
             )
           ],

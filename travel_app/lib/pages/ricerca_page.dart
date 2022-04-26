@@ -16,13 +16,11 @@ class _RicercaPageState extends State<RicercaPage> {
   late List<MetaTuristica> _risultatiRicerca;
   late bool endDrawerOpen;
   late final GlobalKey<ScaffoldState> _scaffoldKey;
-  String? _parolaDiRicerca;
 
+  String? _parolaDiRicerca;
   late int _minRating;
   late int _maxRating;
   String? _country/* = null*/;
-
-
   bool? _available;
 
   @override
@@ -50,43 +48,30 @@ class _RicercaPageState extends State<RicercaPage> {
   void _additionalFilters({
     int minRating = 1,
     int maxRating = 5,
-    String? country
+    String? country,
+    bool? available
   }){
-    setState(() {
-      _minRating = minRating;
-      _maxRating = maxRating;
-      _country = country;
-
-
-      _risultatiRicerca = _risultatiRicerca.where((risultato){
-        return
-          risultato.rating >= minRating
-          && risultato.rating <= maxRating
-          && (country == null || risultato.country == country)
-        ;
-      }).toList();
-    });
-  }
-
-  /*_additionalFilters(
-      {int minRating = 1, int maxRating = 5, String? country, bool? available}){
     setState(() {
       _minRating = minRating;
       _maxRating = maxRating;
       _country = country;
       _available = available;
 
-      print('minRating = $minRating, maxRating = $maxRating, country = $country, available = $available');
-      _filtraMete(_parolaDiRicerca?? '');
-      _risultatiRicerca = _risultatiRicerca.where((meta) {
-        return meta.rating >= minRating
-            && meta.rating <= maxRating
-            && (country == null || country.isEmpty || meta.country == country)
-            && (available == null || meta.available == available);
-        }
-        ).toList();
-      });}
-*/
+      //sto preparando la lista con tutte le mete
+      //filtrte per nome
+      _filtraMete(_parolaDiRicerca ?? '');
+
+      //aggiungo i fitlri addizionali
+      _risultatiRicerca = _risultatiRicerca.where((risultato){
+        return
+          risultato.rating >= minRating
+          && risultato.rating <= maxRating
+          && (country == null || risultato.country == country)
+          && (available == null || risultato.available == available)
+        ;
+      }).toList();
+    });
+  }
 
   void _filtraMete(String parolaDiRicerca){
     _parolaDiRicerca = parolaDiRicerca;
@@ -113,18 +98,13 @@ class _RicercaPageState extends State<RicercaPage> {
       key: _scaffoldKey,
       appBar: AppBar(
         title: const Text('Ricerca'),
-        actions: [
-          IconButton(
-              onPressed: () => _scaffoldKey.currentState?.openEndDrawer(),
-              icon: Icon(Icons.star)),
-          SizedBox(width: 0)
-        ],
       ),
       endDrawerEnableOpenDragGesture: false,
       endDrawer: FilterDrawer(
         selectedRating: RangeValues(_minRating.toDouble(), _maxRating.toDouble()),
         setFilters: _additionalFilters,
        selectedCountry: _country,
+       available: _available,
        /* available: _available ?? false,
         selectedCountry: _country,
         selectedRating: RangeValues(_minRating.toDouble(), _maxRating.toDouble()),
