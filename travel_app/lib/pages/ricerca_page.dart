@@ -15,13 +15,14 @@ class RicercaPage extends StatefulWidget {
 class _RicercaPageState extends State<RicercaPage> {
   late List<MetaTuristica> _risultatiRicerca;
   late bool endDrawerOpen;
-  late final GlobalKey<ScaffoldState> _scaffold;
+  late final GlobalKey<ScaffoldState> _scaffoldKey;
   String? _parolaDiRicerca;
 
   late int _minRating;
   late int _maxRating;
+  String? _country/* = null*/;
 
-  String? _country;
+
   bool? _available;
 
   @override
@@ -32,7 +33,7 @@ class _RicercaPageState extends State<RicercaPage> {
     _maxRating = 5;
 
     _risultatiRicerca = MetaTuristica.listaMete;
-    _scaffold = GlobalKey();
+    _scaffoldKey = GlobalKey();
 
     SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
       final modalArgs = ModalRoute.of(context)?.settings.arguments ?? [];
@@ -40,20 +41,29 @@ class _RicercaPageState extends State<RicercaPage> {
           && modalArgs.isNotEmpty
           && modalArgs[0] is Map<String, dynamic>
           && modalArgs[0]['filterOpen'] == true){
-        _scaffold.currentState?.openEndDrawer();
+        _scaffoldKey.currentState?.openEndDrawer();
       }
     });
   }
 
 
-  void _additionalFilters({int minRating = 1, int maxRating = 5}){
+  void _additionalFilters({
+    int minRating = 1,
+    int maxRating = 5,
+    String? country
+  }){
     setState(() {
       _minRating = minRating;
       _maxRating = maxRating;
+      _country = country;
 
 
       _risultatiRicerca = _risultatiRicerca.where((risultato){
-        return risultato.rating >= minRating && risultato.rating <= maxRating;
+        return
+          risultato.rating >= minRating
+          && risultato.rating <= maxRating
+          && (country == null || risultato.country == country)
+        ;
       }).toList();
     });
   }
@@ -100,10 +110,13 @@ class _RicercaPageState extends State<RicercaPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffold,
+      key: _scaffoldKey,
       appBar: AppBar(
         title: const Text('Ricerca'),
-        actions: const [
+        actions: [
+          IconButton(
+              onPressed: () => _scaffoldKey.currentState?.openEndDrawer(),
+              icon: Icon(Icons.star)),
           SizedBox(width: 0)
         ],
       ),
@@ -111,6 +124,7 @@ class _RicercaPageState extends State<RicercaPage> {
       endDrawer: FilterDrawer(
         selectedRating: RangeValues(_minRating.toDouble(), _maxRating.toDouble()),
         setFilters: _additionalFilters,
+       selectedCountry: _country,
        /* available: _available ?? false,
         selectedCountry: _country,
         selectedRating: RangeValues(_minRating.toDouble(), _maxRating.toDouble()),

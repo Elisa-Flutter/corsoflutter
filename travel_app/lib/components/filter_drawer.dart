@@ -4,12 +4,13 @@ import 'package:travel_app/models/meta_turistica.dart';
 
 class FilterDrawer extends StatefulWidget {
   final RangeValues selectedRating;
-  final Function({int minRating, int maxRating}) setFilters;
+  final String? selectedCountry;
+  final Function({int minRating, int maxRating, String? country}) setFilters;
 
  /* final bool available;
   final String? selectedCountry;
   final Function({int minRating, int maxRating, String? country, bool? available}) setFilters;*/
-  const FilterDrawer({required this.selectedRating, required this.setFilters, /*this.selectedCountry, this.available = false, this.selectedRating = const RangeValues(1, 5),*/ Key? key}) : super(key: key);
+  const FilterDrawer({required this.selectedRating, required this.setFilters, this.selectedCountry, /*this.available = false, this.selectedRating = const RangeValues(1, 5),*/ Key? key}) : super(key: key);
 
   @override
   State<FilterDrawer> createState() => _FilterDrawerState();
@@ -17,18 +18,28 @@ class FilterDrawer extends StatefulWidget {
 
 class _FilterDrawerState extends State<FilterDrawer> {
   late RangeValues _selectedRating;
+  late List<String> _countryList;
+  String? _selectedCountry;
 
   @override
   void initState(){
     super.initState();
     _selectedRating = widget.selectedRating;
+    _selectedCountry = widget.selectedCountry;
+
+    _countryList =
+        MetaTuristica.listaMete.map((meta) => meta.country)
+        .toSet()
+        .toList();
+
+    _countryList.sort();
   }
 
 
 /*  final _formKey = GlobalKey<FormState>();
   late RangeValues _selectedRating;
   late bool _available;
-  late List<String> _countryList;
+
   String? _selectedCountry;
 
   @override
@@ -68,7 +79,6 @@ class _FilterDrawerState extends State<FilterDrawer> {
                           onChanged: (RangeValues value) {
                             setState(() {
                               _selectedRating = value;
-                              widget.setFilters(minRating: value.start.toInt(), maxRating: value.end.toInt());
                             });
                           },
                             labels: RangeLabels(
@@ -81,9 +91,61 @@ class _FilterDrawerState extends State<FilterDrawer> {
                         const Text('5'),
                       ],
                     ),
+
+                    FormField(
+                      builder: (context) {
+                        return InputDecorator(
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder()
+                          ),
+                          child: DropdownButtonHideUnderline(
+                            child: DropdownButton<String?>(
+                                isDense: true,
+                                value: _selectedCountry,
+                                items: <DropdownMenuItem<String?>>[
+                                  const DropdownMenuItem(
+                                    child: Text('Nessuno stato selezionato'),
+                                    value: null,
+                                  )
+                                ] +
+                                    _countryList.map((country) =>
+                                        DropdownMenuItem<String?>(
+                                          child: Text(country),
+                                          value: country,
+                                        )
+                                    ).toList(),
+                                onChanged: (metaSelezionata){
+                                  setState(() {
+                                    _selectedCountry = metaSelezionata;
+                                  });
+                                }
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ]
                 ),
               ),
+            ),
+            Row(
+              children: [
+                TextButton(
+                    onPressed: () => print('_reset'),
+                    child: Text('Reset')
+                ),
+                TextButton(
+                    onPressed: () {
+                      widget.setFilters(
+                       minRating: _selectedRating.start.toInt(),
+                       maxRating: _selectedRating.end.toInt(),
+                       country: _selectedCountry
+                      );
+                      Navigator.of(context).pop();
+                    },
+                    child: Text('Applica'))
+
+              ],
             )
           ],
         ),
