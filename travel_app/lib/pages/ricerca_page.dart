@@ -13,10 +13,12 @@ class RicercaPage extends StatefulWidget {
 }
 
 class _RicercaPageState extends State<RicercaPage> {
-  late List<MetaTuristica> _risultatiRicerca;
-  late bool endDrawerOpen;
   late final GlobalKey<ScaffoldState> _scaffoldKey;
 
+  late List<MetaTuristica> _risultatiRicerca;
+  late bool endDrawerOpen;
+
+  //contengono i filtri ATTUALMENTE applicati
   String? _parolaDiRicerca;
   late int _minRating;
   late int _maxRating;
@@ -26,13 +28,14 @@ class _RicercaPageState extends State<RicercaPage> {
   @override
   void initState() {
     super.initState();
-
+    //La prima volta che creo questo widget, posso definire
+    //dei valori di default per i filtri ATTUALMENTE applicati
     _minRating = 1;
     _maxRating = 5;
-
     _risultatiRicerca = MetaTuristica.listaMete;
     _scaffoldKey = GlobalKey();
 
+    //per aprire il drawer automaticamente, dopo aver aperto la pagina di ricerca
     SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
       final modalArgs = ModalRoute.of(context)?.settings.arguments ?? [];
       if(modalArgs is List
@@ -45,47 +48,60 @@ class _RicercaPageState extends State<RicercaPage> {
   }
 
 
-  void _additionalFilters({
+  //vado ad impostare i filtri addizionali (del drawer) e poi
+  //filtro la lista grazie a _filtraMete
+  void _setAdditionalFilters({
     int minRating = 1,
     int maxRating = 5,
     String? country,
     bool? available
   }){
-    setState(() {
+    //non ho bisogno di setState perché nella pagina di ricerca
+    //non vado a esporre nessuno di questi dati in questa pagina
+    // (es: non ho nessun Text(_available.toString()) )
+    //setState(() {
       _minRating = minRating;
       _maxRating = maxRating;
       _country = country;
       _available = available;
+    //});
 
-      //sto preparando la lista con tutte le mete
-      //filtrte per nome
-      _filtraMete(_parolaDiRicerca ?? '');
+    //non devo wrappare la funzione seguente da uno setState perché la funzione
+    //_filtraMete fa già setState al suo interno
+    _filtraMete(_parolaDiRicerca ?? '');
+  }
 
-      //aggiungo i fitlri addizionali
-      _risultatiRicerca = _risultatiRicerca.where((risultato){
-        return
-          risultato.rating >= minRating
-          && risultato.rating <= maxRating
-          && (country == null || risultato.country == country)
-          && (available == null || risultato.available == available)
-        ;
-      }).toList();
-    });
+  //a partire da una meta, va a verificare se quella meta corrisponde ai filtri
+  //presenti nelle variabili corrispondenti
+  bool _additionalFiltersFor(MetaTuristica meta){
+    return meta.rating >= _minRating
+        && meta.rating <= _maxRating
+        && (_country == null || meta.country == _country)
+        && (_available == null || _available == false || meta.available == _available);
   }
 
   void _filtraMete(String parolaDiRicerca){
+    //setta la variabile di stato _parolaDiRicerca basandosi sulla parola
+    //ricercata nel widget di ricerca
     _parolaDiRicerca = parolaDiRicerca;
     if(parolaDiRicerca.isEmpty){
       setState(() {
-        _risultatiRicerca = MetaTuristica.listaMete;
+        //se non ho filtri per parole di ricerca,
+        //la lista deve seguire i filtri applicati nel drawer
+        _risultatiRicerca = MetaTuristica.listaMete
+            .where((meta) => _additionalFiltersFor(meta))
+            .toList();
       });
     } else {
       setState(() {
         //estraggo le mete DOVE la parola di ricerca in minuscolo
         // è contenuta nella città in minuscolo
+        //inoltre filtro per i filtri applicati nel drawer
         _risultatiRicerca = MetaTuristica.listaMete.where(
-                (meta) => meta.city.toLowerCase()
-                    .contains(parolaDiRicerca.toLowerCase()))
+                (meta) {
+                  return meta.city.toLowerCase().contains(parolaDiRicerca.toLowerCase())
+                        && _additionalFiltersFor(meta);
+                })
             .toList();
       });
     }
@@ -102,14 +118,9 @@ class _RicercaPageState extends State<RicercaPage> {
       endDrawerEnableOpenDragGesture: false,
       endDrawer: FilterDrawer(
         selectedRating: RangeValues(_minRating.toDouble(), _maxRating.toDouble()),
-        setFilters: _additionalFilters,
+        setFilters: _setAdditionalFilters,
        selectedCountry: _country,
        available: _available,
-       /* available: _available ?? false,
-        selectedCountry: _country,
-        selectedRating: RangeValues(_minRating.toDouble(), _maxRating.toDouble()),
-      */
-
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
