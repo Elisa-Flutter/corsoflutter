@@ -25,9 +25,11 @@ class _FilterDrawerState extends State<FilterDrawer> {
   //variabili di STATO: contengono i valori dei filtri che si vogliono applicare
   //NB: finché non si clicca "APPLICA" i filtri non vengono applicati
   late RangeValues _selectedRating;
-  late List<String> _countryList;
   String? _selectedCountry;
   late bool? _available;
+
+  //lista degli stati delle mete
+  late List<String> _countryList;
 
 
   //valori iniziali del widget
