@@ -41,7 +41,16 @@ class Home extends StatelessWidget {
           )
         ],
       ),
-      drawer: Drawer(),
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            ListTile(
+              title: Text('Preferiti'),
+              onTap: () => Navigator.of(context).popAndPushNamed('/favorites'),
+            )
+          ],
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
         child: ListView(
