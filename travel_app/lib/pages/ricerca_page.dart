@@ -37,11 +37,11 @@ class _RicercaPageState extends State<RicercaPage> {
 
     //per aprire il drawer automaticamente, dopo aver aperto la pagina di ricerca
     SchedulerBinding.instance?.addPostFrameCallback((timeStamp) {
-      final modalArgs = ModalRoute.of(context)?.settings.arguments ?? [];
-      if(modalArgs is List
-          && modalArgs.isNotEmpty
-          && modalArgs[0] is Map<String, dynamic>
-          && modalArgs[0]['filterOpen'] == true){
+      final modalArgs = ModalRoute.of(context)?.settings.arguments ?? {};
+
+      if(modalArgs is Map<String,bool>
+          && modalArgs['openDrawer'] == true) {
+       // Scaffold.of(context).openEndDrawer();
         _scaffoldKey.currentState?.openEndDrawer();
       }
     });

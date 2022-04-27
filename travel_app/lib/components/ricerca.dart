@@ -27,9 +27,15 @@ class Ricerca extends StatelessWidget {
             )),
         IconButton(
             onPressed: () {
-              if(Scaffold.of(context).hasEndDrawer){
-                Scaffold.of(context).openEndDrawer();
+              if(amIOnHomepage){
+                //andare alla pagina di ricerca + aprire il drawer
+                Navigator.of(context).pushNamed('/search', arguments: {'openDrawer': true});
+              } else {
+                if(Scaffold.of(context).hasEndDrawer){
+                  Scaffold.of(context).openEndDrawer();
+                }
               }
+
               /*if(amIOnHomepage){
                 Navigator.of(context).pushNamed('/search', arguments: [{'filterOpen': true}]);
               } else{
