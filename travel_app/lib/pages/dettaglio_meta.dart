@@ -1,11 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travel_app/components/place_main_card.dart';
 import 'package:travel_app/components/titolo.dart';
 import 'package:travel_app/models/meta_turistica.dart';
 
-class DettaglioMeta extends StatelessWidget {
+class DettaglioMeta extends StatefulWidget {
   final MetaTuristica meta;
   const DettaglioMeta(this.meta, {Key? key}) : super(key: key);
+
+  @override
+  State<DettaglioMeta> createState() => _DettaglioMetaState();
+}
+
+class _DettaglioMetaState extends State<DettaglioMeta> {
+  bool isFave = false;
+
+  initSP() async {
+    final sp = await SharedPreferences.getInstance();
+    final faves = sp.getStringList("faves") ?? [];
+    setState(() {
+      isFave = faves.contains(widget.meta.city);
+    });
+  }
+
+  changeSP() async{
+    final sp = await SharedPreferences.getInstance();
+    var faves = sp.getStringList("faves") ?? [];
+    if(isFave){
+      faves.remove(widget.meta.city);
+    }
+    else{
+      faves.add(widget.meta.city);
+    }
+    sp.setStringList("faves", faves);
+
+    setState(() {
+      isFave = ! isFave;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initSP();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +51,7 @@ class DettaglioMeta extends StatelessWidget {
         body: Container(
       decoration: BoxDecoration(
         image: DecorationImage(
-            image: NetworkImage(meta.imageUrl), fit: BoxFit.cover),
+            image: NetworkImage(widget.meta.imageUrl), fit: BoxFit.cover),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -41,11 +79,9 @@ class DettaglioMeta extends StatelessWidget {
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(12)),
                   child: IconButton(
-                      onPressed: () => ScaffoldMessenger.of(context)
-                          .showSnackBar(const SnackBar(
-                              content: Text("Added to favorites"))),
-                      icon: const Icon(
-                        Icons.bookmark,
+                      onPressed: changeSP,
+                      icon: Icon(
+                        isFave ? Icons.bookmark : Icons.bookmark_border,
                         color: Colors.black,
                       )),
                 ),
@@ -74,7 +110,7 @@ class DettaglioMeta extends StatelessWidget {
                       //crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Titolo("Great Place to visit"),
-                        Text(meta.description),
+                        Text(widget.meta.description),
 
                         const SizedBox(height: 14),
 
@@ -181,7 +217,7 @@ class DettaglioMeta extends StatelessWidget {
                             Column(
                               children: [
                                 Text(
-                                  "\$ ${meta.minPrice}",
+                                  "\$ ${widget.meta.minPrice}",
                                   style: const TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold),
@@ -218,9 +254,9 @@ class DettaglioMeta extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(24.0),
                     child: PlaceMainCard(
-                        city: meta.city,
-                        country: meta.country,
-                        rating: meta.rating),
+                        city: widget.meta.city,
+                        country: widget.meta.country,
+                        rating: widget.meta.rating),
                   ),
                 ],
               ),
