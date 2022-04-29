@@ -1,6 +1,5 @@
-import 'package:first_json/models/quotes.dart';
-import 'package:first_json/pages/homepage.dart';
 import 'package:flutter/material.dart';
+import 'package:json_due/pages/home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,11 +11,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Prove JSON',
+      title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const Homepage(),
+      home: const Home(),
     );
   }
 }
