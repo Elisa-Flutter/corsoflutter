@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:json_due/api/api_quotes.dart';
+import 'package:json_due/api/api_user.dart';
 import 'package:json_due/models/quotes.dart';
 import 'package:json_due/models/quotes_response.dart';
+import 'package:json_due/models/user.dart';
+import 'package:json_due/models/user_response.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -11,10 +14,10 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  late List<Quotes> _listaQuotesVisualizzate;
+  late List<User> _listaQuotesVisualizzate;
   late bool _hasMoreQuotes;
   late int _skipQuotes;
-  late Future<List<Quotes>> _future;
+  late Future<List<User>> _future;
 
   @override
   void initState() {
@@ -25,12 +28,12 @@ class _HomeState extends State<Home> {
     _future = _fetchQuotes();
   }
 
-  Future<List<Quotes>> _fetchQuotes() async{
-    final QuotesResponse result = await ApiQuotes.getQuotesFromInternet(skip: _skipQuotes);
+  Future<List<User>> _fetchQuotes() async{
+    final UserResponse result = await ApiUser.getUserFromInternet();
     setState(() {
       _skipQuotes = _skipQuotes + result.limit;
       _hasMoreQuotes = (result.total - _skipQuotes > 0);
-      _listaQuotesVisualizzate = _listaQuotesVisualizzate + result.quotes;
+      _listaQuotesVisualizzate = _listaQuotesVisualizzate + result.users;
     });
 
     return _listaQuotesVisualizzate;
@@ -40,7 +43,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Quotes'),
+        title: const Text('Users'),
       ),
       body: RefreshIndicator(
         onRefresh: () {
@@ -55,8 +58,8 @@ class _HomeState extends State<Home> {
         child: FutureBuilder(
           future: _future,
           builder: (context, snapshot){
-            if(snapshot.hasData && snapshot.data is List<Quotes>){
-              final listQuotes = snapshot.data as List<Quotes>;
+            if(snapshot.hasData && snapshot.data is List<User>){
+              final listQuotes = snapshot.data as List<User>;
 
               return ListView.builder(
                   itemCount: listQuotes.length + (_hasMoreQuotes ? 1 : 0),
@@ -67,8 +70,8 @@ class _HomeState extends State<Home> {
                         CircularProgressIndicator(),);
                     }
                     return ListTile(
-                      title: Text(listQuotes[index].quote),
-                      subtitle: Text(listQuotes[index].author),
+                      title: Text(listQuotes[index].weight.toString()),
+                      subtitle: Text('Address: ${listQuotes[index].address}'),
                     );
                   }
               );
