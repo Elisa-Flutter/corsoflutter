@@ -21,7 +21,7 @@ class ApiQuotes{
 
     final response = await http.get(Uri.parse("https://dummyjson.com/quotes"));
 
-    if(response.statusCode != 200){
+    if(response.statusCode == 200){
       return QuotesResponse.fromJson(jsonDecode(response.body));
     }
 
