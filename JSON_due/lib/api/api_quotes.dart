@@ -4,7 +4,7 @@ import 'package:json_due/models/quotes_response.dart';
 import 'package:http/http.dart' as http;
 
 class ApiQuotes{
-  static Future<QuotesResponse> getQuotesFromInternet() async{
+  static Future<QuotesResponse> getQuotesFromInternet({int skip = 0}) async{
     /*metodi per interrogare un url:
       -GET: ottenere una risposta (<- es: entrate su ig per vedere il feed)
       -POST: creare un nuovo elemento (<- es: creazione di un nuovo post)
@@ -19,7 +19,7 @@ class ApiQuotes{
     500: server error
     */
 
-    final response = await http.get(Uri.parse("https://dummyjson.com/quotes"));
+    final response = await http.get(Uri.parse("https://dummyjson.com/quotes?skip=$skip"));
 
     if(response.statusCode == 200){
       return QuotesResponse.fromJson(jsonDecode(response.body));
