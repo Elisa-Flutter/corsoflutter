@@ -3,8 +3,21 @@ import 'package:travel_app/components/card_category.dart';
 import 'package:travel_app/components/titolo.dart';
 import 'package:travel_app/models/interessi.dart';
 
-class Categorie extends StatelessWidget {
-  const Categorie({Key? key}) : super(key: key);
+class Categorie extends StatefulWidget {
+  final List<Interessi>? interessiAttivi;
+  const Categorie({this.interessiAttivi, Key? key}) : super(key: key);
+
+  @override
+  State<Categorie> createState() => _CategorieState();
+}
+
+class _CategorieState extends State<Categorie> {
+  List<Interessi>? _interessiAttivi;
+  @override
+  void initState() {
+    super.initState();
+    _interessiAttivi = widget.interessiAttivi;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,14 +34,16 @@ class Categorie extends StatelessWidget {
                 if(index == 0){
                   return Row(
                     children: [
-                      const CardCategory(
+                       CardCategory(
                         null,
                         color: Colors.red,
                         icon: Icons.spa,
                         text: 'all',
+                        selezionata: _interessiAttivi == null,
                       ),
                       CardCategory(
                         Interessi.values[index],
+                        selezionata: (_interessiAttivi?.contains(Interessi.values[index]) ?? false),
                         marginRight: index != (Interessi.values.length -1),
                       )
                     ],
@@ -36,6 +51,7 @@ class Categorie extends StatelessWidget {
                 }
                 return CardCategory(
                   Interessi.values[index],
+                  selezionata: (_interessiAttivi?.contains(Interessi.values[index]) ?? false),
                   marginRight: index != (Interessi.values.length -1),
                 );
               }

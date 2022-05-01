@@ -3,6 +3,7 @@ import 'package:flutter/scheduler.dart';
 import 'package:travel_app/components/card_place.dart';
 import 'package:travel_app/components/filter_drawer.dart';
 import 'package:travel_app/components/ricerca.dart';
+import 'package:travel_app/models/interessi.dart';
 import 'package:travel_app/models/meta_turistica.dart';
 
 class RicercaPage extends StatefulWidget {
@@ -24,6 +25,7 @@ class _RicercaPageState extends State<RicercaPage> {
   late int _maxRating;
   String? _country/* = null*/;
   bool? _available;
+  List<Interessi>? _interessi;
 
   @override
   void initState() {
@@ -54,7 +56,8 @@ class _RicercaPageState extends State<RicercaPage> {
     int minRating = 1,
     int maxRating = 5,
     String? country,
-    bool? available
+    bool? available,
+    List<Interessi>? interessi,
   }){
     //non ho bisogno di setState perché nella pagina di ricerca
     //non vado a esporre nessuno di questi dati in questa pagina
@@ -64,6 +67,7 @@ class _RicercaPageState extends State<RicercaPage> {
       _maxRating = maxRating;
       _country = country;
       _available = available;
+      _interessi = interessi;
     //});
 
     //non devo wrappare la funzione seguente da uno setState perché la funzione
@@ -77,7 +81,8 @@ class _RicercaPageState extends State<RicercaPage> {
     return meta.rating >= _minRating
         && meta.rating <= _maxRating
         && (_country == null || meta.country == _country)
-        && (_available == null || _available == false || meta.available == _available);
+        && (_available == null || _available == false || meta.available == _available
+        && (_interessi == null || _interessi!.any((interesse) => (meta.interessi?.contains(interesse) ?? false))));
   }
 
   void _filtraMete(String parolaDiRicerca){
@@ -121,6 +126,7 @@ class _RicercaPageState extends State<RicercaPage> {
         setFilters: _setAdditionalFilters,
        selectedCountry: _country,
        available: _available,
+        interessi: _interessi,
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),

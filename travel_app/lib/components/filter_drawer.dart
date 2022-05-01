@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:travel_app/components/categorie.dart';
 import 'package:travel_app/components/titolo.dart';
+import 'package:travel_app/models/interessi.dart';
 import 'package:travel_app/models/meta_turistica.dart';
 
 class FilterDrawer extends StatefulWidget {
@@ -8,12 +9,13 @@ class FilterDrawer extends StatefulWidget {
   final RangeValues selectedRating;
   final String? selectedCountry;
   final bool? available;
+  final List<Interessi>? interessi;
   //questa funzione è una callback che mi serve per impostare nella pagina di
   //ricerca i VALORI ATTUALI dei filtri quando clicco su applica
-  final Function({int minRating, int maxRating, String? country, bool? available}) setFilters;
+  final Function({int minRating, int maxRating, String? country, bool? available, List<Interessi>? interessi}) setFilters;
 
 
-  const FilterDrawer({required this.selectedRating, required this.setFilters, this.selectedCountry,
+  const FilterDrawer({this.interessi, required this.selectedRating, required this.setFilters, this.selectedCountry,
     this.available = false, Key? key}) : super(key: key);
 
   @override
@@ -28,6 +30,7 @@ class _FilterDrawerState extends State<FilterDrawer> {
   late RangeValues _selectedRating;
   String? _selectedCountry;
   late bool? _available;
+  List<Interessi>? _interessi;
 
   //lista degli stati delle mete
   late List<String> _countryList;
@@ -42,6 +45,7 @@ class _FilterDrawerState extends State<FilterDrawer> {
     _selectedRating = widget.selectedRating;
     _selectedCountry = widget.selectedCountry;
     _available = widget.available;
+    _interessi = widget.interessi;
 
     //_coutntryList è una lista di String, che contiene gli stati di tutte le mete
     //.toSet() serve per eliminare le ripetizioni dalla lista
