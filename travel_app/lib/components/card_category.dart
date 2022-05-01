@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:travel_app/models/interessi.dart';
 
 class CardCategory extends StatelessWidget {
-  final Color color;
-  final IconData icon;
-  final String text;
-
+  final Interessi? interesse;
   final bool marginRight;
-  const CardCategory({required this.color, required this.icon, required this.text, this.marginRight = true, Key? key}) : super(key: key);
+
+  //opzionali
+  final Color? color;
+  final IconData? icon;
+  final String? text;
+
+  const CardCategory(this.interesse, {this.color, this.icon, this.text, this.marginRight = true, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,12 +25,12 @@ class CardCategory extends StatelessWidget {
           Container(
             padding: EdgeInsets.all(8),
             decoration: BoxDecoration(
-                color: color,
+                color: interesse?.color ?? color,
                 borderRadius:
                 BorderRadius.circular(16)),
-            child: Icon(icon),
+            child: Icon(interesse?.icon ?? icon),
           ),
-          Text(text)
+          Text(interesse?.name ?? text ?? '')
         ],
       ),
     );

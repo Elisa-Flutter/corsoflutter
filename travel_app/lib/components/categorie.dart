@@ -22,24 +22,20 @@ class Categorie extends StatelessWidget {
                   return Row(
                     children: [
                       const CardCategory(
+                        null,
                         color: Colors.red,
                         icon: Icons.spa,
                         text: 'all',
                       ),
                       CardCategory(
-                        color: Interessi.values[index].color,
-                        icon: Interessi.values[index].icon,
-                        text: Interessi.values[index].name,
+                        Interessi.values[index],
                         marginRight: index != (Interessi.values.length -1),
                       )
                     ],
                   );
                 }
-
                 return CardCategory(
-                  color: Interessi.values[index].color,
-                  icon: Interessi.values[index].icon,
-                  text: Interessi.values[index].name,
+                  Interessi.values[index],
                   marginRight: index != (Interessi.values.length -1),
                 );
               }
