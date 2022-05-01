@@ -71,7 +71,9 @@ class _FilterDrawerState extends State<FilterDrawer> {
               child: Form(
                 child: ListView(
                   children: [
-                    Categorie(),
+                    Categorie((List<Interessi>? interessi){
+                      _interessi = interessi;
+                    }, interessiAttivi: _interessi,),
                     Text('Rating (da '
                         '${_selectedRating.start.toString().substring(0, 1)} '
                         'a ${_selectedRating.end.toString().substring(0, 1)})',
@@ -163,6 +165,7 @@ class _FilterDrawerState extends State<FilterDrawer> {
                         _available = null;
                         _selectedCountry = null;
                         _selectedRating = const RangeValues(1, 5);
+                        _interessi = null;
                       });
                     },
                     child: const Text('Reset')
@@ -173,7 +176,8 @@ class _FilterDrawerState extends State<FilterDrawer> {
                        minRating: _selectedRating.start.toInt(),
                        maxRating: _selectedRating.end.toInt(),
                        country: _selectedCountry,
-                       available: _available == false ? null : _available
+                       available: _available == false ? null : _available,
+                       interessi: _interessi
                       );
                       Navigator.of(context).pop();
                     },

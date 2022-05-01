@@ -5,7 +5,8 @@ import 'package:travel_app/models/interessi.dart';
 
 class Categorie extends StatefulWidget {
   final List<Interessi>? interessiAttivi;
-  const Categorie({this.interessiAttivi, Key? key}) : super(key: key);
+  final Function(List<Interessi>?) callback;
+  const Categorie(this.callback, {this.interessiAttivi, Key? key}) : super(key: key);
 
   @override
   State<Categorie> createState() => _CategorieState();
@@ -40,6 +41,7 @@ class _CategorieState extends State<Categorie> {
                            setState(() {
                              _interessiAttivi = null;
                            });
+                           widget.callback(_interessiAttivi);
                          },
                         color: Colors.red,
                         icon: Icons.spa,
@@ -58,6 +60,7 @@ class _CategorieState extends State<Categorie> {
                               _interessiAttivi!.remove(Interessi.values[index]);
                             }
                           });
+                          widget.callback(_interessiAttivi);
                           },
                         selezionata: (_interessiAttivi?.contains(Interessi.values[index]) ?? false),
                         marginRight: index != (Interessi.values.length -1),
@@ -77,6 +80,7 @@ class _CategorieState extends State<Categorie> {
                         _interessiAttivi!.remove(Interessi.values[index]);
                       }
                     });
+                    widget.callback(_interessiAttivi);
                   },
                   selezionata: (_interessiAttivi?.contains(Interessi.values[index]) ?? false),
                   marginRight: index != (Interessi.values.length -1),

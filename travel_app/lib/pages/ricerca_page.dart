@@ -78,11 +78,11 @@ class _RicercaPageState extends State<RicercaPage> {
   //a partire da una meta, va a verificare se quella meta corrisponde ai filtri
   //presenti nelle variabili corrispondenti
   bool _additionalFiltersFor(MetaTuristica meta){
-    return meta.rating >= _minRating
+   return meta.rating >= _minRating
         && meta.rating <= _maxRating
         && (_country == null || meta.country == _country)
-        && (_available == null || _available == false || meta.available == _available
-        && (_interessi == null || _interessi!.any((interesse) => (meta.interessi?.contains(interesse) ?? false))));
+        && (_available == null || _available == false || meta.available == _available)
+        && (_interessi == null || _interessi!.any((interesse) => (meta.interessi?.contains(interesse) ?? false)));
   }
 
   void _filtraMete(String parolaDiRicerca){
@@ -126,7 +126,7 @@ class _RicercaPageState extends State<RicercaPage> {
         setFilters: _setAdditionalFilters,
        selectedCountry: _country,
        available: _available,
-        interessi: _interessi,
+       interessi: _interessi,
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
