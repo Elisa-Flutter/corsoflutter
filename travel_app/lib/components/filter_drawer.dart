@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:travel_app/components/categorie.dart';
 import 'package:travel_app/components/titolo.dart';
 import 'package:travel_app/models/meta_turistica.dart';
 
@@ -66,6 +67,7 @@ class _FilterDrawerState extends State<FilterDrawer> {
               child: Form(
                 child: ListView(
                   children: [
+                    Categorie(),
                     Text('Rating (da '
                         '${_selectedRating.start.toString().substring(0, 1)} '
                         'a ${_selectedRating.end.toString().substring(0, 1)})',
