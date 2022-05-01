@@ -69,9 +69,65 @@ class _HomeState extends State<Home> {
                       return const Center(child:
                         CircularProgressIndicator(),);
                     }
-                    return ListTile(
+                    /*return ListTile(
                       title: Text(listQuotes[index].weight.toString()),
                       subtitle: Text('Address: ${listQuotes[index].address}'),
+                    );*/
+
+                    return Container(
+                      child: Column(
+                        children: [
+                          Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.all(8),
+                                child: CircleAvatar(
+                                  radius: 48,
+                                  backgroundColor: Colors.pink,
+                                ),
+                              ),
+                             Expanded(
+                               child:  Column(
+                                 crossAxisAlignment: CrossAxisAlignment.start,
+                                 children: [
+                                   Padding(
+                                       padding: EdgeInsets.all(8),
+                                       child: Text('Elisa')
+                                   ),
+                                   Padding(
+                                       padding: EdgeInsets.all(8),
+                                       child: Text('Cattaneo')
+                                   ),
+                                   Row(
+                                     children: [
+                                       Icon(Icons.star),
+                                       Text('rlkvfdlkvaf vdlkvmaefv a fa erag')
+                                     ],
+                                   ),Row(
+                                     children: [
+                                       Icon(Icons.star),
+                                       Text('rlkvfdlkvaf vdlkvmaefv a fa erag')
+                                     ],
+                                   ),Row(
+                                     children: [
+                                       Icon(Icons.star),
+                                       Text('rlkvfdlkvaf vdlkvmaefv a fa erag')
+                                     ],
+                                   ),Row(
+                                     children: [
+                                       Icon(Icons.star),
+                                       Expanded(
+                                         child: Text('rlkvfdlkvaf vdlkvmaefv a fa erag sfj nfkjn skjs vfkhv wakjbn bfjkbnk sfbknfsgb', softWrap: true,),
+                                       )
+                                     ],
+                                   ),
+                                 ],
+                               ),
+                             )
+                            ],
+                          )
+                        ],
+                      )
                     );
                   }
               );

@@ -4,50 +4,47 @@ import 'package:travel_app/components/card_place.dart';
 import 'package:travel_app/models/meta_turistica.dart';
 
 class PreferitiPage extends StatefulWidget {
-  const PreferitiPage({Key? key}) : super(key: key);
+  final StreamingSharedPreferences sp;
+  const PreferitiPage(this.sp, {Key? key}) : super(key: key);
 
   @override
   State<PreferitiPage> createState() => _PreferitiPageState();
 }
 
 class _PreferitiPageState extends State<PreferitiPage> with SingleTickerProviderStateMixin{
-  late StreamingSharedPreferences sp;
-  List<MetaTuristica> list = [];
-
-  initSp() async{
-    sp = await StreamingSharedPreferences.instance;
-
-    final faves = (sp.getStringList("faves", defaultValue: []));
+  List<MetaTuristica> getMete(List<String> meteString){
+    List<MetaTuristica> list = [];
     for (var meta in MetaTuristica.listaMete) {
-      if(await faves.contains(meta.city)){
-        print(meta.city);
-        list.add(meta);
-      }
+      if(meteString.contains(meta.city)){
+    print(meta.city);
+    list.add(meta);
     }
-    setState(() {
-    });
+  }
+    return list;
   }
 
 
   @override
   void initState(){
     super.initState();
-    initSp();
+
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.builder(
-        itemCount: list.length,
-        itemBuilder: (context, index){
-          return AnimatedIcon(
-              progress:  AnimationController(vsync: this, duration: Duration(milliseconds: 450)),
-              icon: AnimatedIcons.event_add);
-
-          //CardPlace(list[index]);
-        }
-    ),
+      body: PreferenceBuilder<List<String>>(
+        preference: widget.sp.getStringList('faves', defaultValue: []),
+        builder: (context, faveListString){
+          List<MetaTuristica> listFaveMete = getMete(faveListString);
+         return ListView.builder(
+              itemCount: listFaveMete.length,
+              itemBuilder: (context, index){
+                return CardPlace(listFaveMete[index]);
+              }
+          );
+        },
+      )
     );
   }
 }
