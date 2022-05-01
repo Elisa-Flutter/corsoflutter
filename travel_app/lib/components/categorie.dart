@@ -36,6 +36,11 @@ class _CategorieState extends State<Categorie> {
                     children: [
                        CardCategory(
                         null,
+                         (bool selected){
+                           setState(() {
+                             _interessiAttivi = null;
+                           });
+                         },
                         color: Colors.red,
                         icon: Icons.spa,
                         text: 'all',
@@ -43,6 +48,17 @@ class _CategorieState extends State<Categorie> {
                       ),
                       CardCategory(
                         Interessi.values[index],
+                        (bool selected){
+                          setState(() {
+                            if(selected){
+                              _interessiAttivi ??=[];
+                              _interessiAttivi!.add(Interessi.values[index]);
+                            }
+                            else{
+                              _interessiAttivi!.remove(Interessi.values[index]);
+                            }
+                          });
+                          },
                         selezionata: (_interessiAttivi?.contains(Interessi.values[index]) ?? false),
                         marginRight: index != (Interessi.values.length -1),
                       )
@@ -51,6 +67,17 @@ class _CategorieState extends State<Categorie> {
                 }
                 return CardCategory(
                   Interessi.values[index],
+                      (bool selected){
+                    setState(() {
+                      if(selected){
+                        _interessiAttivi ??=[];
+                        _interessiAttivi!.add(Interessi.values[index]);
+                      }
+                      else{
+                        _interessiAttivi!.remove(Interessi.values[index]);
+                      }
+                    });
+                  },
                   selezionata: (_interessiAttivi?.contains(Interessi.values[index]) ?? false),
                   marginRight: index != (Interessi.values.length -1),
                 );
