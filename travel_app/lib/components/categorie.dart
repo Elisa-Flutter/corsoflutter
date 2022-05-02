@@ -4,7 +4,9 @@ import 'package:travel_app/components/titolo.dart';
 import 'package:travel_app/models/interessi.dart';
 
 class Categorie extends StatelessWidget {
-  const Categorie({Key? key}) : super(key: key);
+  final List<Interessi> interessiSelezionati;
+  final Function(Interessi?) callback;
+  const Categorie(this.interessiSelezionati, this.callback, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,15 +23,18 @@ class Categorie extends StatelessWidget {
                 if(index == 0){
                   return Row(
                     children: [
-                      const CardCategory(
+                      CardCategory(
+                        null,
+                        interessiSelezionati.isEmpty,
+                        callback,
                         color: Colors.red,
                         icon: Icons.spa,
                         text: 'all',
                       ),
                       CardCategory(
-                        color: Interessi.values[index].color,
-                        icon: Interessi.values[index].icon,
-                        text: Interessi.values[index].name,
+                        Interessi.values[index],
+                        interessiSelezionati.contains(Interessi.values[index]),
+                        callback,
                         marginRight: index != (Interessi.values.length -1),
                       )
                     ],
@@ -37,9 +42,9 @@ class Categorie extends StatelessWidget {
                 }
 
                 return CardCategory(
-                  color: Interessi.values[index].color,
-                  icon: Interessi.values[index].icon,
-                  text: Interessi.values[index].name,
+                  Interessi.values[index],
+                  interessiSelezionati.contains(Interessi.values[index]),
+                  callback,
                   marginRight: index != (Interessi.values.length -1),
                 );
               }

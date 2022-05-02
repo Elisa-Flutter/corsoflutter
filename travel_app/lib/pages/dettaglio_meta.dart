@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travel_app/components/place_main_card.dart';
-import 'package:streaming_shared_preferences/streaming_shared_preferences.dart';
 import 'package:travel_app/components/titolo.dart';
 import 'package:travel_app/models/meta_turistica.dart';
 
@@ -16,16 +16,16 @@ class _DettaglioMetaState extends State<DettaglioMeta> {
   bool isFave = false;
 
   initSP() async {
-    final sp = await StreamingSharedPreferences.instance;
-    final faves = (sp.getStringList("faves", defaultValue: [])).getValue();
+    final sp = await SharedPreferences.getInstance();
+    final faves = sp.getStringList("faves") ?? [];
     setState(() {
       isFave = faves.contains(widget.meta.city);
     });
   }
 
   changeSP() async{
-    final sp = await StreamingSharedPreferences.instance;
-    var faves = sp.getStringList("faves", defaultValue: []).getValue();
+    final sp = await SharedPreferences.getInstance();
+    var faves = sp.getStringList("faves") ?? [];
     if(isFave){
       faves.remove(widget.meta.city);
     }

@@ -55,7 +55,6 @@ class Home extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8),
         child: ListView(
           children: const [
-            Categorie(),
             SizedBox(height: 24),
             Ricerca(amIOnHomepage: true,),
             PopularPlace(height: 170),
