@@ -9,8 +9,8 @@ part 'user.g.dart';
 class User{
   final String? id;
   final String? title;
-  final String? firstName;
-  final String? lastName;
+  final String firstName;
+  final String lastName;
   final String? gender;
   final String? email;
   final String? dateOfBirth;
@@ -20,12 +20,12 @@ class User{
   final Location? location;
 
   const User({
-    required this.id,
+    this.id,
     this.title,
     required this.firstName,
     required this.lastName,
     this.gender,
-    required this.email,
+    this.email,
     this.dateOfBirth,
     this.registerDate,
     this.phone,

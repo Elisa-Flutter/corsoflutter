@@ -25,7 +25,7 @@ class ApiPost{
 
   static Future<Post> getDetailsFor(String id) async{
     final http.Response response = await http.get(
-        Uri.parse('$baseUrl/user/$id'),
+        Uri.parse('$baseUrl/post/$id'),
         headers: {
           'app-id': '626eebd60787bf09ba5c2b33'
         }

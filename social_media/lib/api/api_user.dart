@@ -38,6 +38,27 @@ class ApiUser{
     throw Exception('Errore in ricevere i dettagli dell\'utente: ${response.body}');
   }
 
+  static Future<User> addUser(User user) async{
+
+    var _userJson = user.toJson();
+    _userJson.removeWhere((key, value) => value == null);
+    final _body = jsonEncode(_userJson);
+
+    final response = await http.post(
+      Uri.parse('$baseUrl/user/create'),
+      headers: {
+        'app-id': '626eebd60787bf09ba5c2b33',
+        'Content-Type': 'application/json'
+      },
+      body: _body
+    );
+
+    if(response.statusCode == 200){
+      return User.fromJson(jsonDecode(response.body));
+    }
+
+    throw Exception('Errore nella creazione dell\'utente: ${response.body}');
+  }
 }
 
 /*

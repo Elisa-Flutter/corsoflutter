@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/date_symbol_data_local.dart';
+import 'package:social_media/api/api_user.dart';
 import 'package:social_media/routes.dart';
 
-void main() {
+void main() async{
+  initializeDateFormatting('it_IT', null);
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -17,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
         textTheme: TextTheme(
-          bodyText2: GoogleFonts.areYouSerious()
+         // bodyText2: GoogleFonts.areYouSerious().copyWith(fontSize: 24)
         )
       ),
       initialRoute: '/',

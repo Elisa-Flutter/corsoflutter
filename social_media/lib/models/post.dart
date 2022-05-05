@@ -14,7 +14,7 @@ class Post{
   final String? link;
   final List<String>? tags;
   final String? publishDate;
-  final User? owner;
+  final User owner;
 
   const Post({
     this.id,
@@ -24,7 +24,7 @@ class Post{
     this.link,
     this.tags,
     this.publishDate,
-    this.owner,
+    required this.owner,
   });
 
   factory Post.fromJson(Map<String, dynamic> json) => _$PostFromJson(json);
