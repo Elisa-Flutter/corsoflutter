@@ -44,8 +44,8 @@ class _HomeState extends State<Home> {
       floatingActionButton:
         FloatingActionButton(
           child: const Icon(Icons.add),
-          onPressed: (){
-            showModalBottomSheet(
+          onPressed: () async{
+            var prova = await showModalBottomSheet(
                 isScrollControlled: true,
                 context: context,
                 builder: (context) {
@@ -102,31 +102,11 @@ class _HomeState extends State<Home> {
                   );
                 }
             );
+            if(prova == true){
+              print('nuovi commenti ricevuti');
+            }
           },
         ),
-      /*floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () {
-          showModalBottomSheet(
-              context: context,
-              isScrollControlled: true,
-              builder: (context) {
-                return Padding(
-                  padding: EdgeInsets.only(
-                      bottom: MediaQuery.of(context).viewInsets.bottom),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      TextField(
-                        maxLines: 6,
-                      ),
-                      TextButton(onPressed: () => print('added'), child: Text('Pubblica'))
-                    ],
-                  ),
-                );
-          });
-        },
-      ),*/
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10),

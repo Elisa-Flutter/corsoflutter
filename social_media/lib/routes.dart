@@ -1,13 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:social_media/pages/home.dart';
-import 'package:social_media/pages/login.dart';
+import 'package:social_media/pages/home_page/home.dart';
+import 'package:social_media/pages/log_in/log_in.dart';
 
-generateRoutes() {
+routes() {
   return {
-    '/' : (context) => const Login(),
-    '/profile' : (context) => WillPopScope(onWillPop: () {
-      Navigator.of(context).pop(true);
-      return Future.value(true);},child: const Center(child: Text('Profilo'))),
-    '/home' : (context) => const Home(),
+    "/": (context) => const LogIn(),
+    "/home": (context) => const Home(),
   };
 }
