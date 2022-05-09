@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media/components/button_like.dart';
 import 'package:social_media/components/post_modal_bottom_sheet.dart';
 import 'package:social_media/models/post.dart';
@@ -19,7 +20,6 @@ class CardPost extends StatefulWidget {
 }
 
 class _CardPostState extends State<CardPost> {
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -106,7 +106,7 @@ class _CardPostState extends State<CardPost> {
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Row(
             children: [
-              LikeButton(widget.post),
+              LikeButton(widget.post, widget.userIdLoggato),
               TextButton.icon(
                 onPressed: () {
                   Navigator.of(context)

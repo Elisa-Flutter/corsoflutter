@@ -1,67 +1,71 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:social_media/api/api_post.dart';
 import 'package:social_media/models/post.dart';
+import 'package:social_media/models/user.dart';
 
 class LikeButton extends StatefulWidget {
   final Post post;
-  const LikeButton(this.post, {Key? key}) : super(key: key);
+  final String userIdLoggato;
+  const LikeButton(this.post, this.userIdLoggato, {Key? key}) : super(key: key);
 
   @override
   State<LikeButton> createState() => _LikeButtonState();
 }
 
 class _LikeButtonState extends State<LikeButton> {
-  bool like = false;
-  late int likenum;
-  void initsharepref() async {
-    SharedPreferences shareprefe = await SharedPreferences.getInstance();
-    final _like = shareprefe.getStringList("preferiti") ?? [];
+  bool _conLike = false;
+  late int _numLikes;
+  late List<String> _listaLikes;
+  late SharedPreferences _sp;
+
+  initLike()async{
+    final sp = await SharedPreferences.getInstance();
+    //lista dei post a cui ha messo like l'utente loggato
+    final listaLike = sp.getStringList('like_${widget.userIdLoggato}') ?? [];
     setState(() {
-      like = _like.contains(widget.post.id);
-      if (like) {
-        likenum++;
-      }
+      _conLike = listaLike.contains(widget.post.id);
+      _listaLikes = listaLike;
+      _sp = sp;
     });
   }
 
-  void aggiungipreferiti() async {
-    SharedPreferences shareprefe = await SharedPreferences.getInstance();
-    var _newlike = shareprefe.getStringList("preferiti") ?? [];
-    _newlike.add(widget.post.id!);
-    await shareprefe.setStringList("preferiti", _newlike);
-  }
+  void togglePrefreriti() async {
+    _conLike
+        ? _listaLikes.remove(widget.post.id!)
+        : _listaLikes.add(widget.post.id!);
 
-  void rimuovipreferiti() async {
-    SharedPreferences shareprefe = await SharedPreferences.getInstance();
-    var _like = shareprefe.getStringList("preferiti") ?? [];
-    _like.remove(widget.post.id);
-    await shareprefe.setStringList("preferiti", _like);
+    await _sp.setStringList('like_${widget.userIdLoggato}', _listaLikes);
+
+    _conLike
+        ? _numLikes--
+        : _numLikes++;
+
+    await ApiPost.editPost(
+        Post(
+            id: widget.post.id,
+            likes: _numLikes,
+            owner: const User(firstName: 'Elisa', lastName: 'Cattaneo')),
+        widget.userIdLoggato
+    );
+
+    setState(() {
+      _conLike = !_conLike;
+    });
   }
 
   @override
   void initState() {
-    likenum = widget.post.likes ?? 0;
-
-    initsharepref();
-
+    _numLikes = widget.post.likes ?? 0;
+    initLike();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return TextButton.icon(
-        onPressed: () {
-          like == false ? aggiungipreferiti() : rimuovipreferiti();
-          setState(() {
-            like = !like;
-            if (like) {
-              likenum++;
-            } else {
-              likenum--;
-            }
-          });
-        },
-        icon: Icon(like ? Icons.favorite : Icons.favorite_outline),
-        label: Text(likenum.toString()));
+        onPressed: togglePrefreriti,
+        icon: Icon(_conLike ? Icons.favorite : Icons.favorite_outline),
+        label: Text(_numLikes.toString()));
   }
 }
