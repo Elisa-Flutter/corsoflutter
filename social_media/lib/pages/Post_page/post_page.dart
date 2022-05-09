@@ -7,7 +7,8 @@ import 'components/body_page_post.dart';
 
 class PostPage extends StatefulWidget {
   final Post post;
-  const PostPage(this.post, {Key? key}) : super(key: key);
+  final VoidCallback callback;
+  const PostPage(this.post, {required this.callback, Key? key}) : super(key: key);
 
   @override
   State<PostPage> createState() => _PostPageState();
@@ -94,7 +95,11 @@ class _PostPageState extends State<PostPage> {
              });
            }
           }),
-      body: BodyPagePost(widget.post),
+      body: BodyPagePost(widget.post, () {
+        setState(() {
+          _key = UniqueKey();
+        });
+      }),
     );
   }
 }

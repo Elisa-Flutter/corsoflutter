@@ -6,14 +6,15 @@ import '../../../models/post.dart';
 
 class BodyPagePost extends StatelessWidget {
   final Post post;
-  const BodyPagePost(this.post, {Key? key}) : super(key: key);
+  final VoidCallback inizializzaVariabili;
+  const BodyPagePost(this.post, this.inizializzaVariabili, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListView(
       shrinkWrap: true,
       children: [
-        CardPost(post: post),
+        CardPost(post: post, callback: inizializzaVariabili,),
         ListaCommenti(post.id!),
       ],
     );

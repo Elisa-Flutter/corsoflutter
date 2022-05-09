@@ -1,12 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media/api/api_comment.dart';
-import 'package:social_media/api/api_user.dart';
-import 'package:social_media/components/card_post.dart';
 import 'package:social_media/components/contenuto_post.dart';
-import 'package:social_media/models/comment.dart';
-import 'package:social_media/models/post.dart';
-import 'package:social_media/models/user.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -59,7 +54,7 @@ class _HomeState extends State<Home> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text('Inserisci il tuo commento'),
+                        const Text('Inserisci il tuo commento'),
                         TextField(
                           controller: _textEditingController,
                           maxLines: 5,
@@ -70,22 +65,21 @@ class _HomeState extends State<Home> {
                         Row(
                           children: [
                             TextButton(
-                              child: Text('Annulla'),
+                              child: const Text('Annulla'),
                               onPressed: () {
                                 _message = null;
                                 Navigator.of(context).pop();
                               }
                             ),
                             TextButton(
-                              child: Text('Pubblica'),
+                              child: const Text('Pubblica'),
                               onPressed: () async{
                                 if(_message == null || _message!.isEmpty){
                                   Navigator.of(context).pop(); //O ALERT DIALOG IN CUI SI AVVISA L'UTENTE
                                 }
 
-                                final response = await ApiComment.addCommentTo(_idPost, _message!);
+                                await ApiComment.addCommentTo(_idPost, _message!);
 
-                                print(response.id);
                                 Navigator.of(context).pop();
                                /* final _comment = Comment(
                                     message: _message!,
@@ -121,7 +115,7 @@ class _HomeState extends State<Home> {
                 thickness: 4,
                 color: Colors.blue,
               ),
-              Expanded(
+              const Expanded(
                 child: ContenutoPost()
               ),
             ],

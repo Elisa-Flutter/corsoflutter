@@ -1,15 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media/components/button_like.dart';
+import 'package:social_media/components/post_modal_bottom_sheet.dart';
 import 'package:social_media/models/post.dart';
 import 'package:social_media/pages/Post_page/post_page.dart';
 import 'package:social_media/pages/profilo/profilo.dart';
 
-class CardPost extends StatelessWidget {
+class CardPost extends StatefulWidget {
   final Post post;
   final bool profilo;
-  const CardPost({required this.post, this.profilo = false, Key? key})
+  final VoidCallback callback;
+  const CardPost({required this.post, required this.callback, this.profilo = false, Key? key})
       : super(key: key);
+
+  @override
+  State<CardPost> createState() => _CardPostState();
+}
+
+class _CardPostState extends State<CardPost> {
+  String? _userId;
+
+  void initializeUserId() async{
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    setState(() {
+      _userId = sp.getString('logKey') ?? '';
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    initializeUserId();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,28 +42,45 @@ class CardPost extends StatelessWidget {
       ),
       elevation: 6,
       margin: const EdgeInsets.all(20),
-      child: Column(children: [
+      child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
         Padding(
           padding: const EdgeInsets.all(4),
           child: InkWell(
             onTap: (() {
-              if (profilo == false) {
+              if (widget.profilo == false) {
                 Navigator.of(context)
                     .push(MaterialPageRoute(builder: (context) {
-                  return Profilo(post.owner.id ?? "user not found");
+                  return Profilo(widget.post.owner.id ?? "user not found");
                 }));
               }
             }),
             child: ListTile(
               leading: CircleAvatar(
                 backgroundImage:
-                post.owner.picture != null ? NetworkImage(post.owner.picture!) : null,
+                widget.post.owner.picture != null ? NetworkImage(widget.post.owner.picture!) : null,
               ),
               title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(post.owner.firstName),
-                  const SizedBox(width: 4),
-                  Text(post.owner.lastName),
+                  Text('${widget.post.owner.firstName} ${widget.post.owner.lastName}'),
+                  Visibility(
+                    visible: widget.post.owner.id == _userId,
+                      child: TextButton(
+                          child: const Text('Modifica'),
+                          onPressed: () async {
+                              final changed = await showModalBottomSheet(
+                                  context: context,
+                                  isScrollControlled: true,
+                                  builder: (context) => PostModalBottomSheet(_userId!, post: widget.post)
+                              );
+                              if(changed == true){
+                                widget.callback();
+                              }
+                          },
+                      )
+                  )
                 ],
               ),
             ),
@@ -48,13 +88,14 @@ class CardPost extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.only(right: 12, bottom: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              if (post.publishDate != null)
-                Text(
+          child:
+            Visibility(
+              visible: widget.post.publishDate != null,
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Text(
                   DateFormat.yMMMMd('it_IT').add_Hm().format(
-                        DateTime.parse(post.publishDate!),
+                        DateTime.parse(widget.post.publishDate!),
                       ),
                   textAlign: TextAlign.end,
                   style: const TextStyle(
@@ -62,12 +103,13 @@ class CardPost extends StatelessWidget {
                       color: Colors.black54,
                       fontWeight: FontWeight.normal),
                 ),
-            ],
-          ),
+              ),
+            ),
         ),
-        if(post.image != null) Image.network(post.image!),
-        if(post.tags != null) Wrap(
-            children: post.tags!
+        if(widget.post.text != null) Text(widget.post.text!),
+        if(widget.post.image != null) Image.network(widget.post.image!),
+        if(widget.post.tags != null) Wrap(
+            children: widget.post.tags!
                 .map((item) => Padding(
                       padding: const EdgeInsets.all(4.0),
                       child: Chip(label: Text(item)),
@@ -77,12 +119,12 @@ class CardPost extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Row(
             children: [
-              LikeButton(post),
+              LikeButton(widget.post),
               TextButton.icon(
                 onPressed: () {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (context) {
-                    return PostPage(post);
+                    return PostPage(widget.post, callback: widget.callback,);
                   }));
                 },
                 icon: const Icon(Icons.comment_bank_outlined),

@@ -55,7 +55,7 @@ class _ContenutoPostState extends State<ContenutoPost> {
             builder: (context, snapshot) {
               if (snapshot.hasData && snapshot.data is List<Post>) {
                 final listPost = (snapshot.data as List<Post>);
-                return ListView(
+                /*return ListView(
                   children: [
                     ExpansionPanelList(
                       expansionCallback: (_,__){
@@ -67,34 +67,34 @@ class _ContenutoPostState extends State<ContenutoPost> {
                         ExpansionPanel(
                           isExpanded: _isExpanded,
                           headerBuilder: (_,__){
-                            return ListTile(title: Text('Titolo'));
+                            return const ListTile(title: Text('Titolo'));
                           },
                           body: Column(
-                            children: [
-                              ListTile(title: Text('Prova'),)
+                            children: const [
+                               ListTile(title: Text('Prova'),)
                             ],
                           )
                         )
                       ],
                     ),
                   ],
-                );
-                /*return ListView.builder(
+                );*/
+                return ListView.builder(
                     itemCount: listPost.length/* + (_hasMorePost ? 1 : 0)*/,
                     itemBuilder: (context,index){
                       if(index == _listPost.length-1 && _hasMorePost){
                         _future = _fetchPost();
                         return Column(
                           children: [
-                            CardPost(post: listPost[index]),
+                            CardPost(post: listPost[index], callback: inizializeInitVariables,),
                           //  if(index < _listPost.length-1) CircularProgressIndicator()
                           ],
                         );
                       }
                       else {
-                        return CardPost(post: listPost[index]);
+                        return CardPost(post: listPost[index], callback: inizializeInitVariables,);
                       }
-                    });*/
+                    });
                     /*itemBuilder: (context, index) {
                       if (index == _listPost.length) {
                         _future = _fetchPost();

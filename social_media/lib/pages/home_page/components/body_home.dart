@@ -77,7 +77,7 @@ class _BodyHomeState extends State<BodyHome> {
 
                       return Column(
                         children: [
-                          CardPost(post: listPost[index]),
+                          CardPost(post: listPost[index], callback: inizializzaVariabili,),
                           if (index < _listPost.length)
                             const CircularProgressIndicator(),
                         ],
@@ -86,6 +86,7 @@ class _BodyHomeState extends State<BodyHome> {
                     return CardPost(
                       post: listPost[index],
                       profilo: widget.profilo,
+                      callback: inizializzaVariabili,
                     );
                   });
             }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:social_media/api/api_user.dart';
 
 class Login extends StatelessWidget {
   const Login({Key? key}) : super(key: key);
@@ -33,7 +32,7 @@ class Login extends StatelessWidget {
                       children: [
                         Container(
                           height: 100,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             image: DecorationImage(
                               image: NetworkImage(
                                 'https://randomuser.me/api/portraits/women/58.jpg'
@@ -41,7 +40,7 @@ class Login extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Text('Sara Andersen')
+                        const Text('Sara Andersen')
                       ],
                     ),
                   ),
@@ -59,7 +58,7 @@ class Login extends StatelessWidget {
                       children: [
                         Container(
                           height: 100,
-                          decoration: BoxDecoration(
+                          decoration: const BoxDecoration(
                             image: DecorationImage(
                               image: NetworkImage(
                                 'https://randomuser.me/api/portraits/med/men/23.jpg'
@@ -67,7 +66,7 @@ class Login extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Text('Emre Asikoglu')
+                        const Text('Emre Asikoglu')
                       ],
                     ),
                   ),

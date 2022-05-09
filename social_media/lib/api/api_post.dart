@@ -68,4 +68,52 @@ class ApiPost{
     throw Exception('Errore in ricevere i post per tag: ${response.body}');
   }
 
+  static Future<Post> addNewPost(Post post, String userId) async{
+    Map<String,dynamic> _jsonPost = post.toJson();
+    _jsonPost.removeWhere((key, value) => value == null);
+    _jsonPost['owner'] = userId;
+
+    //se sono qui, lo userId non è nullo perché non si è interrota la funzione a riga 62
+    final http.Response response = await http.post(
+        Uri.parse('$baseUrl/post/create'),
+        headers: {
+          'app-id': '626eebd60787bf09ba5c2b33',
+          'Content-Type': 'application/json'
+        },
+        body: jsonEncode(_jsonPost)
+    );
+
+    if(response.statusCode == 200){
+      return Post.fromJson(jsonDecode(response.body));
+    }
+
+    throw Exception('Post non inserito: ${response.body}');
+  }
+
+  static Future<Post> editPost(Post post, String userId) async{
+    Map<String,dynamic> _jsonPost = post.toJson();
+    _jsonPost.removeWhere((key, value) => value == null);
+    _jsonPost['owner'] = userId;
+    _jsonPost.removeWhere((key, value) => key == 'id');
+
+    if(post.id == null){
+      throw Exception('Id del post necessario e non trovato');
+    }
+
+    //se sono qui, lo userId non è nullo perché non si è interrota la funzione a riga 62
+    final http.Response response = await http.put(
+        Uri.parse('$baseUrl/post/${post.id}'),
+        headers: {
+          'app-id': '626eebd60787bf09ba5c2b33',
+          'Content-Type': 'application/json'
+        },
+        body: jsonEncode(_jsonPost)
+    );
+
+    if(response.statusCode == 200){
+      return Post.fromJson(jsonDecode(response.body));
+    }
+
+    throw Exception('Post non modificato: ${response.body}');
+  }
 }

@@ -19,7 +19,7 @@ class CardComment extends StatelessWidget {
             title: Text(comment.owner.firstName),
           ),
           Text(comment.message),
-          SizedBox(
+          const SizedBox(
             height: 10,
           )
         ],
