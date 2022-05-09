@@ -14,10 +14,10 @@ class LogInCard extends StatelessWidget {
       onTap: () async {
         SharedPreferences sp = await SharedPreferences.getInstance();
 
-        sp.setString('logKey', user.id!);
+        await sp.setString('logKey', user.id!);
 
         Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-          return const Home();
+          return Home(user.id!);
         }));
       },
       child: Padding(

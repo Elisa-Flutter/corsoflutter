@@ -19,15 +19,18 @@ class _PostModalBottomSheetState extends State<PostModalBottomSheet> {
   @override
   void initState() {
     super.initState();
-    if(widget.post != null){
+    /*if(widget.post != null){
       _controllerText = TextEditingController(text: widget.post!.text);
-      final String tags = widget.post!.tags?.join(', ') ?? '';
+      final String? tags = widget.post!.tags?.join(', ');
       _controllerTags = TextEditingController(text: tags);
     }
     else {
       _controllerText = TextEditingController();
       _controllerTags = TextEditingController();
-    }
+    }*/
+    _controllerText = TextEditingController(text: widget.post?.text);
+    String? tags = widget.post?.tags?.join(', ');
+    _controllerTags = TextEditingController(text: tags);
   }
 
   @override
@@ -52,11 +55,6 @@ class _PostModalBottomSheetState extends State<PostModalBottomSheet> {
             children: [
               TextButton(
                   onPressed: (){
-                    if(widget.post != null){
-                      _controllerText.text = widget.post!.text ?? '';
-                      final String tags = widget.post!.tags?.join(', ') ?? '';
-                      _controllerTags.text = tags;
-                    }
                     Navigator.of(context).pop();
                   },
                   child: const Text('Annulla')
@@ -68,14 +66,18 @@ class _PostModalBottomSheetState extends State<PostModalBottomSheet> {
                           id: widget.post?.id,
                           text: _controllerText.text,
                           tags: _controllerTags.text.split(', '),
+                          image: widget.post != null ? widget.post!.image : 'immagine di deafault',
                           owner: const User(firstName: 'Elisa', lastName: 'Cattaneo')
                       );
                       if(widget.post != null){
-                        ApiPost.editPost(_newPost, widget.userId);
+                        await ApiPost.editPost(_newPost, widget.userId);
                       } else {
-                        ApiPost.addNewPost(_newPost, widget.userId);
+                        await ApiPost.addNewPost(_newPost, widget.userId);
                       }
                       Navigator.of(context).pop(true);
+                    }
+                    else{
+                      throw Exception('Inserire un testo nel post');
                     }
                   },
                   child: widget.post != null ? const Text('Aggiorna') : const Text('Pubblica')

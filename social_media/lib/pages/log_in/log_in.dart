@@ -11,12 +11,12 @@ class LogIn extends StatefulWidget {
 }
 
 class _LogInState extends State<LogIn> {
-  bool logged = false;
+  String? idUtenteLoggato;
 
   void inizializeSharedPreferences() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     setState(() {
-      logged = sp.getString('logKey') != null;
+      idUtenteLoggato = sp.getString('logKey');
     });
   }
 
@@ -28,6 +28,8 @@ class _LogInState extends State<LogIn> {
 
   @override
   Widget build(BuildContext context) {
-    return logged ? const Home() : const BodyLogIn();
+    return (idUtenteLoggato != null)
+        ? Home(idUtenteLoggato!)
+        : const BodyLogIn();
   }
 }

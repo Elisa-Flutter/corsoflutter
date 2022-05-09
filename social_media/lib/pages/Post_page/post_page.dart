@@ -95,11 +95,14 @@ class _PostPageState extends State<PostPage> {
              });
            }
           }),
-      body: BodyPagePost(widget.post, () {
-        setState(() {
-          _key = UniqueKey();
-        });
-      }),
+      body: Visibility(
+        visible: _idUtente != null,
+        child: BodyPagePost(widget.post, () {
+          setState(() {
+            _key = UniqueKey();
+          });
+        }, userId: _idUtente!),
+      ),
     );
   }
 }
