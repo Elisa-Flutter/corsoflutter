@@ -107,7 +107,7 @@ class _CardPostState extends State<CardPost> {
             ),
         ),
         if(widget.post.text != null) Text(widget.post.text!),
-        if(widget.post.image != null) Image.network(widget.post.image!),
+        if(widget.post.image != null && widget.post.image!.isNotEmpty) Image.network(widget.post.image!),
         if(widget.post.tags != null) Wrap(
             children: widget.post.tags!
                 .map((item) => Padding(
