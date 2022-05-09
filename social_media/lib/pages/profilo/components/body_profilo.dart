@@ -44,9 +44,9 @@ class BodyProfilo extends StatelessWidget {
               const Divider(),
               ListProfDett(user),
               const Divider(),
-              Expanded(
+              if(user.id != null) Expanded(
                   child: BodyHome(
-                iduser: user.id,
+                user.id!,
                 profilo: true,
               )),
             ],

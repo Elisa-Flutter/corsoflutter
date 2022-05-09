@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media/components/button_like.dart';
 import 'package:social_media/components/post_modal_bottom_sheet.dart';
 import 'package:social_media/models/post.dart';
@@ -8,10 +7,11 @@ import 'package:social_media/pages/Post_page/post_page.dart';
 import 'package:social_media/pages/profilo/profilo.dart';
 
 class CardPost extends StatefulWidget {
+  final String userIdLoggato;
   final Post post;
   final bool profilo;
   final VoidCallback callback;
-  const CardPost({required this.post, required this.callback, this.profilo = false, Key? key})
+  const CardPost(this.userIdLoggato, {required this.post, required this.callback, this.profilo = false, Key? key})
       : super(key: key);
 
   @override
@@ -19,20 +19,6 @@ class CardPost extends StatefulWidget {
 }
 
 class _CardPostState extends State<CardPost> {
-  String? _userId;
-
-  void initializeUserId() async{
-    SharedPreferences sp = await SharedPreferences.getInstance();
-    setState(() {
-      _userId = sp.getString('logKey') ?? '';
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    initializeUserId();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,14 +52,15 @@ class _CardPostState extends State<CardPost> {
                 children: [
                   Text('${widget.post.owner.firstName} ${widget.post.owner.lastName}'),
                   Visibility(
-                    visible: widget.post.owner.id == _userId,
+                      visible: widget.post.owner.id == widget.userIdLoggato,
                       child: TextButton(
                           child: const Text('Modifica'),
                           onPressed: () async {
                               final changed = await showModalBottomSheet(
                                   context: context,
                                   isScrollControlled: true,
-                                  builder: (context) => PostModalBottomSheet(_userId!, post: widget.post)
+                                  builder: (context)
+                                    => PostModalBottomSheet(widget.userIdLoggato, post: widget.post)
                               );
                               if(changed == true){
                                 widget.callback();

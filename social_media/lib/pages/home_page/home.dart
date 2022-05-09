@@ -6,7 +6,8 @@ import 'package:social_media/components/custom_appbar.dart';
 import 'package:social_media/pages/home_page/components/drawer_custom.dart';
 
 class Home extends StatefulWidget {
-  const Home({Key? key}) : super(key: key);
+  final String userId;
+  const Home(this.userId, {Key? key}) : super(key: key);
 
   @override
   State<Home> createState() => _HomeState();
@@ -14,23 +15,11 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   late Key _scaffoldKey;
-  String? _userId;
-
-  initUserId() async {
-    SharedPreferences sp = await SharedPreferences.getInstance();
-    setState(() {
-      _userId = sp.getString('logKey');
-    });
-    if (_userId == null) {
-      throw Exception('Utente non loggato');
-    }
-  }
 
   @override
   void initState() {
     super.initState();
     _scaffoldKey = UniqueKey();
-    initUserId();
   }
 
   @override
@@ -39,21 +28,20 @@ class _HomeState extends State<Home> {
         key: _scaffoldKey,
         appBar: const CustomAppBAr(),
         drawer: const DrawerCustom(),
-        floatingActionButton: _userId != null
-            ? FloatingActionButton(
+        floatingActionButton: FloatingActionButton(
             child: const Icon(Icons.add),
             onPressed: () async {
                final edited = await showModalBottomSheet(
                     context: context,
-                    builder: (context) => PostModalBottomSheet(_userId!));
+                    builder: (context) => PostModalBottomSheet(widget.userId));
                if(edited == true){
                  setState(() {
                    _scaffoldKey = UniqueKey();
                  });
                }
               }
-              )
-            : null,
-        body: const BodyHome());
+              ),
+        body: BodyHome(widget.userId)
+    );
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:social_media/models/post.dart';
 import 'package:social_media/models/post_response.dart';
 
@@ -100,7 +101,6 @@ class ApiPost{
       throw Exception('Id del post necessario e non trovato');
     }
 
-    //se sono qui, lo userId non è nullo perché non si è interrota la funzione a riga 62
     final http.Response response = await http.put(
         Uri.parse('$baseUrl/post/${post.id}'),
         headers: {
