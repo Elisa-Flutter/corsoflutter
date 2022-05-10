@@ -56,7 +56,7 @@ class Home extends StatelessWidget {
         child: ListView(
           children: const [
             SizedBox(height: 24),
-            Ricerca(amIOnHomepage: true,),
+            Ricerca(amIOnHomepage: true),
             PopularPlace(height: 170),
             Recommended(height: 170)
           ],
