@@ -66,7 +66,7 @@ class _PostModalBottomSheetState extends State<PostModalBottomSheet> {
                           id: widget.post?.id,
                           text: _controllerText.text,
                           tags: _controllerTags.text.split(', '),
-                          image: widget.post != null ? widget.post!.image : 'immagine di deafault',
+                          image: widget.post?.image,
                           owner: const User(firstName: 'Elisa', lastName: 'Cattaneo')
                       );
                       if(widget.post != null){

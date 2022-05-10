@@ -116,4 +116,21 @@ class ApiPost{
 
     throw Exception('Post non modificato: ${response.body}');
   }
+
+    static Future<bool> deletePost(String postId) async{
+
+    final http.Response response = await http.delete(
+        Uri.parse('$baseUrl/post/$postId'),
+        headers: {
+          'app-id': '626eebd60787bf09ba5c2b33'
+        }
+    );
+
+    if(response.statusCode == 200){
+      return true;
+    }
+
+    throw Exception('Errore in eliminazione post: ${response.body}');
+  }
+
 }
