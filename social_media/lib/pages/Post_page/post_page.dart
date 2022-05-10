@@ -17,7 +17,7 @@ class PostPage extends StatefulWidget {
 class _PostPageState extends State<PostPage> {
   late TextEditingController _textEditingController;
   String? _message;
-  late String? _idUtente;
+  String? _idUtente;
   late String _idPost;
   late UniqueKey _key;
 
@@ -81,7 +81,6 @@ class _PostPageState extends State<PostPage> {
                                 }
 
                                 await ApiComment.addCommentTo(_idPost, _message!);
-
                                 _message = null;
                                 _textEditingController.clear();
                                 Navigator.of(context).pop(true);
@@ -96,12 +95,13 @@ class _PostPageState extends State<PostPage> {
            }
           }),
       body: Visibility(
-        visible: _idUtente != null,
+        visible: true,/*_idUtente != null*/
         child: BodyPagePost(widget.post, () {
           setState(() {
             _key = UniqueKey();
           });
-        }, userId: _idUtente!),
+        },
+            userId: '60d0fe4f5311236168a109ca'),
       ),
     );
   }

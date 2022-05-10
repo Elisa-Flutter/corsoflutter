@@ -69,7 +69,7 @@ class ApiComment{
           'Content-Type': 'application/json'
         },
         body: jsonEncode({
-          'owner': userId,
+          'owner': '60d0fe4f5311236168a109ca',
           'post': postId,
           'message': message
         })
@@ -102,5 +102,20 @@ class ApiComment{
     }
 
     throw Exception('Commento non inserito: ${response.body}');
+  }
+
+  static Future<bool> deleteCommentId(String commentId) async{
+    final http.Response response = await http.delete(
+        Uri.parse('$baseUrl/comment/$commentId'),
+        headers: {
+          'app-id': '626eebd60787bf09ba5c2b33'
+        }
+    );
+
+    if(response.statusCode == 200){
+      return true;
+    }
+
+    throw Exception('Errore nell\'eliminazione del commento: ${response.body}');
   }
 }
