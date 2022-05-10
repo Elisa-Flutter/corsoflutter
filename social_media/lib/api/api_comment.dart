@@ -56,7 +56,7 @@ class ApiComment{
   //modo "manuale"
   static Future<Comment> addCommentTo(String postId, String message) async{
     SharedPreferences sp = await SharedPreferences.getInstance();
-    String? userId = sp.getString('loggedUser');
+    String? userId = sp.getString('logKey');
 
     if(userId == null){
       throw Exception('Impossibile insere un commento, per favore fai il login');
@@ -69,7 +69,7 @@ class ApiComment{
           'Content-Type': 'application/json'
         },
         body: jsonEncode({
-          'owner': '60d0fe4f5311236168a109ca',
+          'owner': userId,
           'post': postId,
           'message': message
         })
